@@ -22,12 +22,17 @@ export default {
           hover: '#ff4761',
           soft: 'rgba(255,45,74,0.12)',
         },
+        electric: {
+          DEFAULT: '#22d3ee',
+          hover: '#67e8f9',
+          soft: 'rgba(34,211,238,0.10)',
+        },
         gold: '#f5b942',
         emerald: '#22c98a',
         crimson: '#ff4757',
       },
       fontFamily: {
-        display: ['"Space Grotesk"', 'system-ui', 'sans-serif'],
+        display: ['"Inter"', 'system-ui', 'sans-serif'],
         sans: ['"Inter"', 'system-ui', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
       },
