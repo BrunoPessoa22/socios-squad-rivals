@@ -9,9 +9,7 @@ import {
   Filter,
   TrendingUp,
   AlertTriangle,
-  Brain,
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import { PageHeader, PositionBadge, Stat } from '../components/ui';
 import { cn } from '../lib/cn';
 import { players, suggestedSquad } from '../data/mock';
@@ -74,12 +72,6 @@ export default function SquadBuilder() {
         subtitle="Five players. One captain. Token boosts power your edge."
         right={
           <>
-            <Link
-              to="/coach"
-              className="btn-ghost border-accent/40 text-accent hover:bg-accent/[0.06]"
-            >
-              <Brain size={14} /> Ask Coach
-            </Link>
             <button
               className="btn-ghost"
               onClick={() =>
