@@ -16,29 +16,38 @@ import {
 } from 'lucide-react';
 import { PageHeader, PositionBadge } from '../components/ui';
 import { cn } from '../lib/cn';
-import { coachOutput, players, fanTokens } from '../data/mock';
+import {
+  getCoachOutput,
+  players,
+  fanTokens,
+  assistants,
+} from '../data/mock';
+import type { CoachPick } from '../data/mock';
 import { useAssistant, useGame } from '../lib/store';
 
 export default function Coach() {
   const navigate = useNavigate();
   const [applied, setApplied] = useState(false);
+  const [showSwitch, setShowSwitch] = useState(false);
   const assistant = useAssistant();
   const userName = useGame((s) => s.userName);
+  const setAssistantId = useGame((s) => s.setAssistant);
   const addressee = userName || 'boss';
+  const coachOutput = getCoachOutput(assistant.id);
 
   return (
     <>
       <PageHeader
-        eyebrow={`${assistant.name}'s pick · ${coachOutput.matchday}`}
+        eyebrow={`${assistant.styleLabel} · ${coachOutput.matchday}`}
         title={
           <span className="inline-flex items-center gap-3 flex-wrap">
-            {assistant.name}'s lineup
+            {assistant.name}'s pick
             <span className="text-[11px] font-medium uppercase tracking-[0.16em] text-accent border border-accent/40 bg-accent/10 px-2 py-0.5 rounded-full">
               Powered by FTI
             </span>
           </span>
         }
-        subtitle={`${assistant.tagline}. I read your wallet, queried Fan Token Intel, and picked the optimal 5. I never recommend trades.`}
+        subtitle={`${assistant.tagline}. Different assistants pick differently — same FTI data, different scoring weights.`}
         right={
           <>
             <button
@@ -72,39 +81,92 @@ export default function Coach() {
       />
 
       {/* Assistant character card */}
-      <div className="surface p-5 mb-5 flex items-center gap-4">
-        <div
-          className="h-16 w-16 rounded-full overflow-hidden shrink-0 ring-2 ring-accent/50"
-          style={{ background: `hsl(${assistant.accentHue} 60% 30%)` }}
-        >
-          <img
-            src={assistant.photo}
-            alt={assistant.name}
-            className="h-full w-full object-cover"
-            onError={(e) => {
-              (e.target as HTMLImageElement).style.display = 'none';
-            }}
-          />
-        </div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="font-display text-lg text-white">
-              {assistant.name}
-            </span>
-            <span className="text-xs text-ink-200">
-              {assistant.age}y/o · {assistant.countryFlag} {assistant.country}
-            </span>
-            <span className="pill !text-[10px] !py-0 !px-1.5">
-              {assistant.style}
-            </span>
+      <div className="surface p-5 mb-5">
+        <div className="flex items-center gap-4">
+          <div
+            className="h-16 w-16 rounded-full overflow-hidden shrink-0 ring-2 ring-accent/50"
+            style={{ background: `hsl(${assistant.accentHue} 60% 30%)` }}
+          >
+            <img
+              src={assistant.photo}
+              alt={assistant.name}
+              className="h-full w-full object-cover"
+              onError={(e) => {
+                (e.target as HTMLImageElement).style.display = 'none';
+              }}
+            />
           </div>
-          <p className="mt-1.5 text-sm text-ink-100 italic">
-            "Right, {addressee}. Here's how I'd line you up this matchday."
-          </p>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="font-display text-lg text-white">
+                {assistant.name}
+              </span>
+              <span className="text-xs text-ink-200">
+                {assistant.age}y/o · {assistant.countryFlag} {assistant.country}
+              </span>
+              <span className="pill !text-[10px] !py-0 !px-1.5">
+                {assistant.styleLabel}
+              </span>
+            </div>
+            <p className="mt-1.5 text-sm text-ink-100 italic">
+              "{assistant.coachLine}, {addressee}."
+            </p>
+          </div>
+          <button
+            onClick={() => setShowSwitch(!showSwitch)}
+            className="btn-ghost text-xs hidden sm:inline-flex"
+          >
+            {showSwitch ? 'Close' : 'Switch'}
+          </button>
         </div>
-        <button className="btn-ghost text-xs hidden sm:inline-flex">
-          Switch assistant
-        </button>
+        {showSwitch && (
+          <div className="mt-4 pt-4 border-t border-white/[0.06]">
+            <div className="text-[11px] uppercase tracking-[0.14em] text-ink-300 mb-2">
+              Same data · different scoring · different lineup
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
+              {assistants.map((a) => {
+                const active = a.id === assistant.id;
+                return (
+                  <button
+                    key={a.id}
+                    onClick={() => setAssistantId(a.id)}
+                    className={cn(
+                      'rounded-lg border p-2.5 text-left transition',
+                      active
+                        ? 'border-accent/50 bg-accent/[0.06] shadow-glow'
+                        : 'border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.04]',
+                    )}
+                  >
+                    <div className="flex items-center gap-2">
+                      <div
+                        className="h-7 w-7 rounded-full overflow-hidden shrink-0"
+                        style={{ background: `hsl(${a.accentHue} 60% 30%)` }}
+                      >
+                        <img
+                          src={a.photo}
+                          alt={a.name}
+                          className="h-full w-full object-cover"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).style.display = 'none';
+                          }}
+                        />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="text-xs font-medium text-white truncate">
+                          {a.name}
+                        </div>
+                        <div className="text-[10px] text-ink-300 truncate">
+                          {a.styleLabel}
+                        </div>
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Hero stripe — confidence + holdings */}
@@ -177,7 +239,35 @@ export default function Coach() {
             </span>
           </div>
           <ul className="space-y-2">
-            {coachOutput.lineup.map((pick) => {
+            {coachOutput.lineup.map((entry, idx) => {
+              if ('vacant' in entry) {
+                return (
+                  <li
+                    key={`vacant-${idx}`}
+                    className="rounded-xl border border-dashed border-crimson/30 bg-crimson/[0.03] px-4 py-4"
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className="flex items-center gap-2 shrink-0 w-[80px]">
+                        <PositionBadge position={entry.slot as never} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="font-medium text-crimson">
+                            Slot left vacant
+                          </span>
+                          <span className="pill !text-[10px] !py-0 !border-crimson/30 !text-crimson !bg-crimson/10">
+                            By design
+                          </span>
+                        </div>
+                        <p className="mt-1.5 text-sm text-ink-100 leading-relaxed">
+                          {entry.reason}
+                        </p>
+                      </div>
+                    </div>
+                  </li>
+                );
+              }
+              const pick = entry as CoachPick;
               const player = players.find((p) => p.id === pick.playerId)!;
               return (
                 <li

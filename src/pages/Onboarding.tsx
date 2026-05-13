@@ -16,12 +16,12 @@ import { cn } from '../lib/cn';
 import { useGame } from '../lib/store';
 
 const STYLE_COLORS: Record<string, string> = {
-  aggressive: 'text-crimson border-crimson/40 bg-crimson/10',
-  balanced: 'text-emerald border-emerald/40 bg-emerald/10',
-  defensive: 'text-blue-300 border-blue-400/40 bg-blue-400/10',
-  calm: 'text-cyan-200 border-cyan-300/40 bg-cyan-300/10',
-  counter: 'text-violet-200 border-violet-300/40 bg-violet-300/10',
-  attacking: 'text-gold border-gold/40 bg-gold/10',
+  punter: 'text-crimson border-crimson/40 bg-crimson/10',
+  banker: 'text-blue-300 border-blue-400/40 bg-blue-400/10',
+  analyst: 'text-emerald border-emerald/40 bg-emerald/10',
+  diversifier: 'text-violet-200 border-violet-300/40 bg-violet-300/10',
+  loyalist: 'text-cyan-200 border-cyan-300/40 bg-cyan-300/10',
+  'form-chaser': 'text-gold border-gold/40 bg-gold/10',
 };
 
 export default function Onboarding() {
@@ -208,9 +208,8 @@ function StepAssistant({
           Let's choose your assistant
         </h1>
         <p className="mt-3 text-sm text-ink-200 max-w-md mx-auto">
-          Pick the personality you want as your Matchday Coach. Choice is
-          cosmetic + flavour — your gameplay stays the same. You can switch
-          anytime.
+          Each assistant uses the same FTI data but a different scoring
+          formula. They will pick different lineups. Switch anytime.
         </p>
       </div>
 
@@ -265,7 +264,7 @@ function StepAssistant({
                   STYLE_COLORS[a.style],
                 )}
               >
-                {a.style}
+                {a.styleLabel}
               </div>
               <div className="mt-2 font-medium text-white text-sm">
                 {a.tagline}

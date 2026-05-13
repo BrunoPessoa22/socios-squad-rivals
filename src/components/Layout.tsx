@@ -17,7 +17,7 @@ import { useAssistant, useGame } from '../lib/store';
 
 const nav = [
   { to: '/squad', label: 'Pitch', icon: Layers },
-  { to: '/coach', label: 'Coach', icon: Brain, badge: 'NEW' as const },
+  { to: '/coach', label: 'Assistant', icon: Brain, badge: 'NEW' as const },
   { to: '/rivals', label: 'Rivals', icon: Swords },
   { to: '/matchup', label: 'Matchup', icon: Sparkles },
   { to: '/leaderboard', label: 'League', icon: Trophy },

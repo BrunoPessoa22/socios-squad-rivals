@@ -7,12 +7,12 @@ import type {
 } from './types';
 
 export type AssistantStyle =
-  | 'aggressive'
-  | 'balanced'
-  | 'defensive'
-  | 'calm'
-  | 'counter'
-  | 'attacking';
+  | 'banker'
+  | 'analyst'
+  | 'punter'
+  | 'diversifier'
+  | 'loyalist'
+  | 'form-chaser';
 
 export type Assistant = {
   id: string;
@@ -21,9 +21,11 @@ export type Assistant = {
   country: string;
   countryFlag: string;
   style: AssistantStyle;
+  styleLabel: string;
   tagline: string;
   bio: string;
   intro: string;
+  coachLine: string;
   photo: string;
   accentHue: number;
   philosophy: string[];
@@ -37,14 +39,20 @@ export const assistants: Assistant[] = [
     age: 33,
     country: 'Italy',
     countryFlag: '🇮🇹',
-    style: 'defensive',
-    tagline: 'Catenaccio classicist',
-    bio: 'Trained in the Curva Sud philosophy. Patient, ruthless, defensive first.',
+    style: 'banker',
+    styleLabel: 'The Banker',
+    tagline: 'High floor over high ceiling',
+    bio: 'Picks proven starters only. Skips anyone with rotation or injury risk. Wins consistently, never spectacularly.',
     intro: "Great call, boss. Let's get you set up, shall we?",
+    coachLine: "Picked the safest five — no rotation risk, no injury clouds",
     photo: 'https://i.pravatar.cc/400?img=12',
     accentHue: 220,
-    philosophy: ['Defense first', 'Counter-attacks', 'Disciplined captain picks'],
-    signaturePhrase: 'In bocca al lupo.',
+    philosophy: [
+      'Minutes likelihood ≥ 85%',
+      'Avoids fixture difficulty > 0.6',
+      'Captain = stable form, not peak form',
+    ],
+    signaturePhrase: 'Slow and steady, boss.',
   },
   {
     id: 'sofia',
@@ -52,14 +60,20 @@ export const assistants: Assistant[] = [
     age: 29,
     country: 'Spain',
     countryFlag: '🇪🇸',
-    style: 'balanced',
-    tagline: 'Tiki-taka believer',
-    bio: 'La Masia school. Possession wins games, but only if the captain delivers.',
-    intro: 'Bienvenido. I will be your assistant — let me read your wallet first.',
+    style: 'analyst',
+    styleLabel: 'The Analyst',
+    tagline: 'Balanced — FTI default',
+    bio: 'Equal weights across form, fixture, boost, signals. The textbook pick. Trust the data.',
+    intro: 'Welcome. Let me read your wallet first — then we pick together.',
+    coachLine: "Balanced read — equal weights across form, fixture, boost, and signal",
     photo: 'https://i.pravatar.cc/400?img=45',
     accentHue: 0,
-    philosophy: ['Possession-led', 'Balanced 1-1-2-1', 'Form-weighted captain'],
-    signaturePhrase: 'Mucha suerte.',
+    philosophy: [
+      'Equal weights across all 6 scoring factors',
+      'Captain = top weighted-score',
+      'No bias toward any single signal',
+    ],
+    signaturePhrase: 'Trust the model.',
   },
   {
     id: 'marcus',
@@ -67,14 +81,20 @@ export const assistants: Assistant[] = [
     age: 38,
     country: 'Germany',
     countryFlag: '🇩🇪',
-    style: 'aggressive',
-    tagline: 'Gegenpressing fanatic',
-    bio: 'High-line, high-press. Picks high-variance, high-ceiling lineups every time.',
-    intro: "Let's go. No half-measures with me — we play to win the matchday.",
+    style: 'punter',
+    styleLabel: 'The Punter',
+    tagline: 'High ceiling, accepted variance',
+    bio: 'Picks explosive over reliable. Captains the most volatile attacker. Wins big or busts.',
+    intro: "Let's go. No half-measures — we play to win the matchday.",
+    coachLine: "Going big — highest ceiling at every slot, captain on max-variance",
     photo: 'https://i.pravatar.cc/400?img=33',
     accentHue: 12,
-    philosophy: ['High press', 'Two strikers', 'Boost stacking over rotation'],
-    signaturePhrase: 'Vorwärts.',
+    philosophy: [
+      'Form weight 0.35, signal weight 0.25',
+      'Captain = highest single-match ceiling',
+      'Tolerates rotation risk for upside',
+    ],
+    signaturePhrase: 'No guts, no glory.',
   },
   {
     id: 'yuki',
@@ -82,14 +102,20 @@ export const assistants: Assistant[] = [
     age: 31,
     country: 'Japan',
     countryFlag: '🇯🇵',
-    style: 'counter',
-    tagline: 'Counter-strike strategist',
-    bio: 'Reads opponent tactics, exploits transitions. Methodical, data-first.',
+    style: 'diversifier',
+    styleLabel: 'The Diversifier',
+    tagline: 'Hedge across all your tokens',
+    bio: 'One player per held club where possible. Spreads boost activations. Resilient to single-team disasters.',
     intro: 'Hello. I have read 12 of your last matches. Let me ask a few questions.',
+    coachLine: "Hedged across all four clubs you hold — every boost active",
     photo: 'https://i.pravatar.cc/400?img=47',
     accentHue: 280,
-    philosophy: ['Counter-tactic reads', 'Variance-aware picks', 'Captain by matchup'],
-    signaturePhrase: 'Ganbatte kudasai.',
+    philosophy: [
+      'Max 2 players per club',
+      'Boost coverage ≥ 4 clubs when possible',
+      'Captain on largest boost holder',
+    ],
+    signaturePhrase: 'Steady wins.',
   },
   {
     id: 'khaled',
@@ -97,14 +123,20 @@ export const assistants: Assistant[] = [
     age: 27,
     country: 'Morocco',
     countryFlag: '🇲🇦',
-    style: 'calm',
-    tagline: 'Vibes-based football',
-    bio: 'Picks based on form, mood, and gut. Surprisingly good results.',
-    intro: 'Salam. We are going to keep this simple. Trust the process.',
+    style: 'loyalist',
+    styleLabel: 'The Loyalist',
+    tagline: 'Boost-first, club-first',
+    bio: 'Refuses to pick non-held-team players. Leaves slots vacant rather than dilute the boost. Holding more tokens = more options.',
+    intro: 'Salam. We ride for the clubs you hold — no one else.',
+    coachLine: "Won't pick a player from a club you don't hold — we ride for yours",
     photo: 'https://i.pravatar.cc/400?img=8',
     accentHue: 145,
-    philosophy: ['Form over fixture', 'Calm captaincy', 'Avoid injury risk'],
-    signaturePhrase: 'Bismillah.',
+    philosophy: [
+      'Boost weight 0.50 (vs default 0.20)',
+      'Refuses non-held clubs even if slot stays empty',
+      'Surfaces token-acquisition prompts',
+    ],
+    signaturePhrase: 'Hold the colours.',
   },
   {
     id: 'olivia',
@@ -112,14 +144,20 @@ export const assistants: Assistant[] = [
     age: 35,
     country: 'Brazil',
     countryFlag: '🇧🇷',
-    style: 'attacking',
-    tagline: 'Joga bonito',
-    bio: 'All-out attack. Forwards score, defenders are optional.',
-    intro: "Oi! Let's pick a squad that scores goals. The rest sorts itself.",
+    style: 'form-chaser',
+    styleLabel: 'The Form-Chaser',
+    tagline: 'Last 3 matches dominate',
+    bio: 'Picks who is hot right now. Last 3 matches weighted heavier than season-long. Ignores reputation.',
+    intro: "Oi! Let's pick who is on fire right now. The rest is noise.",
+    coachLine: "Picked who is hot right now — last-3-match form dominates the scoring",
     photo: 'https://i.pravatar.cc/400?img=24',
     accentHue: 50,
-    philosophy: ['Two strikers always', 'Captain = top scorer', 'Form > form'],
-    signaturePhrase: 'Boa sorte!',
+    philosophy: [
+      'Form weight 0.50 (last 3 matches)',
+      'Drops players on cold streak even with good fixture',
+      'Captain = highest recent score, not season avg',
+    ],
+    signaturePhrase: 'Ride the wave.',
   },
 ];
 
@@ -243,98 +281,209 @@ export type CoachPick = {
   ftiSources: string[];
 };
 
-export const coachOutput = {
-  generatedAt: '2026-05-13 08:14 UTC',
-  matchday: 'Matchday 33 · 17–18 May',
-  confidence: 84,
-  summary:
-    'Strong home weekend for your held clubs. Captain Vitinha for double the highest individual boost. International break starts next week — watch for Yamal call-up.',
-  lineup: [
-    {
-      slot: 'GK',
-      playerId: 'p1',
-      captain: false,
-      note: 'PSG conceded 0.4 xGA in last 5 home games; Reims away form is bottom-3 of Ligue 1.',
-      citedStat: { label: 'xGA / home / L5', value: '0.40' },
-      boostToken: '$PSG',
-      boostMultiplier: 1.25,
-      ftiSources: ['sports_profile', 'match_correlation'],
-    },
-    {
-      slot: 'DEF',
-      playerId: 'p3',
-      captain: false,
-      note: 'Hakimi back from suspension; FTI match_correlation shows 2 assists in last 3 meetings vs Reims.',
-      citedStat: { label: 'Assists vs Reims (L3)', value: '2' },
-      boostToken: '$PSG',
-      boostMultiplier: 1.25,
-      ftiSources: ['sports_profile', 'match_correlation'],
-    },
-    {
-      slot: 'MID',
-      playerId: 'p7',
-      captain: true,
-      note: 'Captain. Form 8.2 over last 5 — highest in your eligible pool. Captain doubles your top $PSG boost.',
-      citedStat: { label: 'Form index (L5)', value: '8.2' },
-      boostToken: '$PSG',
-      boostMultiplier: 1.25,
-      ftiSources: ['sports_profile', 'signal_bundle', 'token_sensitivity'],
-    },
-    {
-      slot: 'FWD',
-      playerId: 'p11',
-      captain: false,
-      note: 'Scored in last 3 meetings vs Reims; FTI signal_bundle confidence 0.81 for PSG attackers this week.',
-      citedStat: { label: 'Signal confidence', value: '0.81' },
-      boostToken: '$PSG',
-      boostMultiplier: 1.25,
-      ftiSources: ['signal_bundle', 'match_impact_history'],
-    },
-    {
-      slot: 'FWD',
-      playerId: 'p12',
-      captain: false,
-      note: 'Form 9.0; Barça home vs Sevilla, fixture difficulty 0.31. $BAR boost +18% applies.',
-      citedStat: { label: 'Form index (L5)', value: '9.0' },
-      boostToken: '$BAR',
-      boostMultiplier: 1.18,
-      ftiSources: ['sports_profile', 'match_correlation'],
-    },
-  ] as CoachPick[],
-  warnings: [
-    {
-      kind: 'national-break',
-      severity: 'info' as const,
-      title: 'International break starts May 24',
-      body: 'Your $PSG boost will pause for Vitinha and Hakimi (Portugal / Morocco duty). If you hold $POR or $MAR, Coach will switch the boost automatically.',
-      affectedPlayers: ['Vitinha', 'Hakimi'],
-    },
-    {
-      kind: 'injury',
-      severity: 'warn' as const,
-      title: 'Raphinha — minor knock',
-      body: 'Listed 75% fit in latest sports_profile. Coach selected Yamal instead; you can override on the Pitch screen.',
-      affectedPlayers: ['Raphinha'],
-    },
-  ],
-  ftiCallsSummary: [
-    { tool: 'wallet_balance', latency: '120ms' },
-    { tool: 'token_metadata × 4', latency: '180ms' },
-    { tool: 'match_calendar', latency: '210ms' },
-    { tool: 'sports_profile × 4', latency: '340ms' },
-    { tool: 'match_correlation × 4', latency: '290ms' },
-    { tool: 'signal_bundle', latency: '180ms' },
-    { tool: 'token_sensitivity', latency: '90ms' },
-  ],
-  scoringBreakdown: [
-    { factor: 'Form (last 5, recency-weighted)', weight: 0.25 },
-    { factor: 'Fixture difficulty (inverse opp strength)', weight: 0.20 },
-    { factor: 'Home / away modifier', weight: 0.10 },
-    { factor: 'Minutes likelihood (rotation risk)', weight: 0.15 },
-    { factor: 'Effective boost (balance × sensitivity)', weight: 0.20 },
-    { factor: 'FTI signal_bundle confidence', weight: 0.10 },
-  ],
+export type CoachWarning = {
+  kind: string;
+  severity: 'info' | 'warn';
+  title: string;
+  body: string;
 };
+
+export type CoachOutput = {
+  generatedAt: string;
+  matchday: string;
+  confidence: number;
+  summary: string;
+  lineup: (CoachPick | { slot: string; vacant: true; reason: string })[];
+  warnings: CoachWarning[];
+  ftiCallsSummary: { tool: string; latency: string }[];
+  scoringBreakdown: { factor: string; weight: number }[];
+};
+
+const baseFtiCalls = [
+  { tool: 'wallet_balance', latency: '120ms' },
+  { tool: 'token_metadata × 4', latency: '180ms' },
+  { tool: 'match_calendar', latency: '210ms' },
+  { tool: 'sports_profile × 4', latency: '340ms' },
+  { tool: 'match_correlation × 4', latency: '290ms' },
+  { tool: 'signal_bundle', latency: '180ms' },
+  { tool: 'token_sensitivity', latency: '90ms' },
+];
+
+const matchday = 'Matchday 33 · 17–18 May';
+const generatedAt = '2026-05-13 08:14 UTC';
+
+// Equal-weight baseline (Analyst). Other styles tilt these.
+const baseWeights = [
+  { factor: 'Form (last 5, recency-weighted)', weight: 0.25 },
+  { factor: 'Fixture difficulty (inverse opp strength)', weight: 0.20 },
+  { factor: 'Home / away modifier', weight: 0.10 },
+  { factor: 'Minutes likelihood (rotation risk)', weight: 0.15 },
+  { factor: 'Effective boost (balance × sensitivity)', weight: 0.20 },
+  { factor: 'FTI signal_bundle confidence', weight: 0.10 },
+];
+
+const outputs: Record<AssistantStyle, CoachOutput> = {
+  analyst: {
+    generatedAt,
+    matchday,
+    confidence: 84,
+    summary:
+      'Balanced read. Vitinha captain for the highest weighted score in your pool. Raphinha flagged 75% fit — Yamal in.',
+    lineup: [
+      { slot: 'GK', playerId: 'p1', captain: false, note: 'PSG conceded 0.4 xGA in last 5 home games; Reims away form is bottom-3 of Ligue 1.', citedStat: { label: 'xGA / home / L5', value: '0.40' }, boostToken: '$PSG', boostMultiplier: 1.25, ftiSources: ['sports_profile', 'match_correlation'] },
+      { slot: 'DEF', playerId: 'p3', captain: false, note: 'Back from suspension; 2 assists in last 3 meetings vs Reims.', citedStat: { label: 'Assists vs Reims (L3)', value: '2' }, boostToken: '$PSG', boostMultiplier: 1.25, ftiSources: ['match_correlation'] },
+      { slot: 'MID', playerId: 'p7', captain: true, note: 'Captain. Form 8.2 over last 5 — highest in your eligible MID pool. 2× boost on PSG.', citedStat: { label: 'Form index (L5)', value: '8.2' }, boostToken: '$PSG', boostMultiplier: 1.25, ftiSources: ['sports_profile', 'signal_bundle'] },
+      { slot: 'FWD', playerId: 'p11', captain: false, note: 'Scored in last 3 meetings vs Reims; signal_bundle confidence 0.81 for PSG attackers.', citedStat: { label: 'Signal confidence', value: '0.81' }, boostToken: '$PSG', boostMultiplier: 1.25, ftiSources: ['signal_bundle'] },
+      { slot: 'FWD', playerId: 'p12', captain: false, note: 'Form 9.0; Barça home vs Sevilla. $BAR boost +18% applies.', citedStat: { label: 'Form index (L5)', value: '9.0' }, boostToken: '$BAR', boostMultiplier: 1.18, ftiSources: ['sports_profile'] },
+    ],
+    warnings: [
+      { kind: 'injury', severity: 'warn', title: 'Raphinha — minor knock', body: 'Listed 75% fit in latest sports_profile. Yamal in instead.' },
+    ],
+    ftiCallsSummary: baseFtiCalls,
+    scoringBreakdown: baseWeights,
+  },
+
+  banker: {
+    generatedAt,
+    matchday,
+    confidence: 78,
+    summary:
+      'Safest five. Haaland over Yamal for FWD-2 (less rotation risk this week). Captain on Vitinha — stable form, no injury cloud. Lower ceiling but I sleep at night.',
+    lineup: [
+      { slot: 'GK', playerId: 'p1', captain: false, note: 'Every-week starter, 99 minutes per match last 5. No rotation risk.', citedStat: { label: 'Mins per match (L5)', value: '99' }, boostToken: '$PSG', boostMultiplier: 1.25, ftiSources: ['sports_profile'] },
+      { slot: 'DEF', playerId: 'p3', captain: false, note: 'Started all 38 league matches last season — never rotated. Form 7.4.', citedStat: { label: 'Started last L5', value: '5/5' }, boostToken: '$PSG', boostMultiplier: 1.25, ftiSources: ['sports_profile'] },
+      { slot: 'MID', playerId: 'p7', captain: true, note: 'Captain. Form 8.2, never rotated, no injury history. The safest captain in your pool.', citedStat: { label: 'Form index (L5)', value: '8.2' }, boostToken: '$PSG', boostMultiplier: 1.25, ftiSources: ['sports_profile', 'signal_bundle'] },
+      { slot: 'FWD', playerId: 'p11', captain: false, note: 'PSG starter, 3 goals in last 3. Predictable output.', citedStat: { label: 'Goals (L3)', value: '3' }, boostToken: '$PSG', boostMultiplier: 1.25, ftiSources: ['match_correlation'] },
+      { slot: 'FWD', playerId: 'p14', captain: false, note: 'Skipped Yamal here — Barça rotates in cup weeks. Haaland never rotated in 2026, form 8.8.', citedStat: { label: 'Form index (L5)', value: '8.8' }, boostToken: '$CITY', boostMultiplier: 1.05, ftiSources: ['sports_profile'] },
+    ],
+    warnings: [
+      { kind: 'rotation', severity: 'info', title: 'Avoided Yamal', body: 'Barça often rotates Yamal in cup weeks. Haaland has started every Premier League match in 2026.' },
+    ],
+    ftiCallsSummary: baseFtiCalls,
+    scoringBreakdown: [
+      { factor: 'Minutes likelihood (rotation risk)', weight: 0.30 },
+      { factor: 'Fixture difficulty (inverse opp strength)', weight: 0.25 },
+      { factor: 'Form (last 5, recency-weighted)', weight: 0.20 },
+      { factor: 'Effective boost (balance × sensitivity)', weight: 0.15 },
+      { factor: 'FTI signal_bundle confidence', weight: 0.05 },
+      { factor: 'Home / away modifier', weight: 0.05 },
+    ],
+  },
+
+  punter: {
+    generatedAt,
+    matchday,
+    confidence: 71,
+    summary:
+      'Going for ceiling. Haaland captain — he scored 10/10 two matches ago. Yamal + Haaland front 2 = max possible output. Variance is the price.',
+    lineup: [
+      { slot: 'GK', playerId: 'p1', captain: false, note: 'Same GK — variance plays don\'t apply here.', citedStat: { label: 'xGA / home / L5', value: '0.40' }, boostToken: '$PSG', boostMultiplier: 1.25, ftiSources: ['sports_profile'] },
+      { slot: 'DEF', playerId: 'p3', captain: false, note: 'Attacking fullback. 2 assists L3, FTI signal confidence 0.78 for PSG to score 2+.', citedStat: { label: 'Signal confidence', value: '0.78' }, boostToken: '$PSG', boostMultiplier: 1.25, ftiSources: ['signal_bundle'] },
+      { slot: 'MID', playerId: 'p7', captain: false, note: 'High form, but not captain this week — captaincy belongs to the ceiling pick.', citedStat: { label: 'Form index (L5)', value: '8.2' }, boostToken: '$PSG', boostMultiplier: 1.25, ftiSources: ['sports_profile'] },
+      { slot: 'FWD', playerId: 'p12', captain: false, note: 'Form 9.0, peak match score 9 in 4 of last 5. High ceiling pick.', citedStat: { label: 'Form index (L5)', value: '9.0' }, boostToken: '$BAR', boostMultiplier: 1.18, ftiSources: ['sports_profile'] },
+      { slot: 'FWD', playerId: 'p14', captain: true, note: 'Captain. Scored 10 in last meeting vs Wolves. Highest single-match ceiling in your pool. 2× CITY boost.', citedStat: { label: 'Peak score (L5)', value: '10' }, boostToken: '$CITY', boostMultiplier: 1.05, ftiSources: ['signal_bundle', 'match_impact_history'] },
+    ],
+    warnings: [
+      { kind: 'variance', severity: 'info', title: 'High variance week', body: 'Captain on Haaland doubles the volatility. Expected range: 45–95 points (vs Analyst 60–80).' },
+    ],
+    ftiCallsSummary: baseFtiCalls,
+    scoringBreakdown: [
+      { factor: 'Form (last 5, recency-weighted)', weight: 0.35 },
+      { factor: 'FTI signal_bundle confidence', weight: 0.25 },
+      { factor: 'Effective boost (balance × sensitivity)', weight: 0.20 },
+      { factor: 'Fixture difficulty (inverse opp strength)', weight: 0.10 },
+      { factor: 'Home / away modifier', weight: 0.05 },
+      { factor: 'Minutes likelihood (rotation risk)', weight: 0.05 },
+    ],
+  },
+
+  loyalist: {
+    generatedAt,
+    matchday,
+    confidence: 69,
+    summary:
+      'Four $PSG starters — I refuse to dilute the boost. FWD-2 is vacant: you don\'t hold a second PSG-eligible attacker. Buy more $PSG or accept the 4-player penalty.',
+    lineup: [
+      { slot: 'GK', playerId: 'p1', captain: false, note: 'PSG. $PSG boost +25% active.', citedStat: { label: 'Boost', value: '+25%' }, boostToken: '$PSG', boostMultiplier: 1.25, ftiSources: ['token_sensitivity'] },
+      { slot: 'DEF', playerId: 'p3', captain: false, note: 'PSG. Boost stacks, fixture is home vs bottom-3.', citedStat: { label: 'Boost', value: '+25%' }, boostToken: '$PSG', boostMultiplier: 1.25, ftiSources: ['token_sensitivity'] },
+      { slot: 'MID', playerId: 'p7', captain: true, note: 'Captain. PSG. Double boost = +50% effective. Highest yield slot.', citedStat: { label: 'Effective boost (C)', value: '+50%' }, boostToken: '$PSG', boostMultiplier: 1.25, ftiSources: ['token_sensitivity', 'signal_bundle'] },
+      { slot: 'FWD', playerId: 'p11', captain: false, note: 'PSG. Form 8.2, 3 goals L3 vs Reims. Last PSG attacker available.', citedStat: { label: 'Goals (L3)', value: '3' }, boostToken: '$PSG', boostMultiplier: 1.25, ftiSources: ['match_correlation'] },
+      { slot: 'FWD', vacant: true, reason: 'You hold no other $PSG-eligible FWD. I will not pick a non-held-team player. Consider acquiring $PSG or another striker from a held club.' },
+    ],
+    warnings: [
+      { kind: 'token-gap', severity: 'warn', title: 'Token gap detected', body: 'Your $PSG holdings cover 4/5 slots. Adding 50 $PSG would let me cover all 5 with full boost. Or hold a $BAR/$JUV/$CITY FWD to fill the vacancy.' },
+    ],
+    ftiCallsSummary: baseFtiCalls,
+    scoringBreakdown: [
+      { factor: 'Effective boost (balance × sensitivity)', weight: 0.50 },
+      { factor: 'Form (last 5, recency-weighted)', weight: 0.20 },
+      { factor: 'Fixture difficulty (inverse opp strength)', weight: 0.10 },
+      { factor: 'FTI signal_bundle confidence', weight: 0.10 },
+      { factor: 'Minutes likelihood (rotation risk)', weight: 0.05 },
+      { factor: 'Home / away modifier', weight: 0.05 },
+    ],
+  },
+
+  diversifier: {
+    generatedAt,
+    matchday,
+    confidence: 76,
+    summary:
+      'Hedged across all four clubs you hold. One bad week from any single team doesn\'t sink the matchday. Captain on Foden — biggest non-PSG boost contribution.',
+    lineup: [
+      { slot: 'GK', playerId: 'p1', captain: false, note: 'PSG slot. Form 6.6 but reliable; trades upside for boost coverage.', citedStat: { label: 'Form index (L5)', value: '6.6' }, boostToken: '$PSG', boostMultiplier: 1.25, ftiSources: ['sports_profile'] },
+      { slot: 'DEF', playerId: 'p4', captain: false, note: 'BAR slot. Cubarsí stable form, $BAR boost +18%.', citedStat: { label: 'Form index (L5)', value: '7.4' }, boostToken: '$BAR', boostMultiplier: 1.18, ftiSources: ['sports_profile'] },
+      { slot: 'MID', playerId: 'p10', captain: true, note: 'Captain. CITY slot — your lightest holding, captaining doubles the modest boost. Form 8.0, never rotated.', citedStat: { label: 'Form index (L5)', value: '8.0' }, boostToken: '$CITY', boostMultiplier: 1.05, ftiSources: ['sports_profile', 'signal_bundle'] },
+      { slot: 'FWD', playerId: 'p13', captain: false, note: 'JUV slot. Vlahović form 6.8 — coverage over ceiling. $JUV +10% active.', citedStat: { label: 'Form index (L5)', value: '6.8' }, boostToken: '$JUV', boostMultiplier: 1.10, ftiSources: ['sports_profile'] },
+      { slot: 'FWD', playerId: 'p11', captain: false, note: 'PSG repeat — only allowed double, on the highest-boost club.', citedStat: { label: 'Boost', value: '+25%' }, boostToken: '$PSG', boostMultiplier: 1.25, ftiSources: ['token_sensitivity'] },
+    ],
+    warnings: [
+      { kind: 'coverage', severity: 'info', title: 'All 4 boosts active', body: 'Every fan token you hold contributes to this lineup. Maximum hedge.' },
+    ],
+    ftiCallsSummary: baseFtiCalls,
+    scoringBreakdown: [
+      { factor: 'Effective boost (balance × sensitivity)', weight: 0.25 },
+      { factor: 'Boost-coverage bonus (unique clubs)', weight: 0.20 },
+      { factor: 'Form (last 5, recency-weighted)', weight: 0.20 },
+      { factor: 'Fixture difficulty (inverse opp strength)', weight: 0.15 },
+      { factor: 'Minutes likelihood (rotation risk)', weight: 0.15 },
+      { factor: 'FTI signal_bundle confidence', weight: 0.05 },
+    ],
+  },
+
+  'form-chaser': {
+    generatedAt,
+    matchday,
+    confidence: 81,
+    summary:
+      'Picked who is hot now. Yamal + Haaland — both form 8.8 in last 5, both peaked 9–10 in last 3. Captain on Yamal — last 3 matches average 9.0. Reputations off, recent data on.',
+    lineup: [
+      { slot: 'GK', playerId: 'p1', captain: false, note: 'Form 6.6 L5, but L3 average 6.7 — stable. Slight cold week, kept anyway.', citedStat: { label: 'Form (L3)', value: '6.7' }, boostToken: '$PSG', boostMultiplier: 1.25, ftiSources: ['sports_profile'] },
+      { slot: 'DEF', playerId: 'p3', captain: false, note: 'L3 form = 7.7 (vs season 7.4). Trending up — kept.', citedStat: { label: 'L3 form trend', value: '+0.3' }, boostToken: '$PSG', boostMultiplier: 1.25, ftiSources: ['sports_profile'] },
+      { slot: 'MID', playerId: 'p7', captain: false, note: 'L3 form 8.0 — slight cool-off from peak. Still top MID by recency.', citedStat: { label: 'L3 form', value: '8.0' }, boostToken: '$PSG', boostMultiplier: 1.25, ftiSources: ['sports_profile'] },
+      { slot: 'FWD', playerId: 'p12', captain: true, note: 'Captain. L3 form 8.7. Hottest player in your held pool right now. 2× $BAR boost.', citedStat: { label: 'L3 form', value: '8.7' }, boostToken: '$BAR', boostMultiplier: 1.18, ftiSources: ['sports_profile', 'signal_bundle'] },
+      { slot: 'FWD', playerId: 'p14', captain: false, note: 'L3 form 9.0 — peak 10 two matches ago. Cold reputation, hot last 3.', citedStat: { label: 'L3 form', value: '9.0' }, boostToken: '$CITY', boostMultiplier: 1.05, ftiSources: ['sports_profile'] },
+    ],
+    warnings: [
+      { kind: 'recency-bias', severity: 'info', title: 'Recency bias on', body: 'I drop players on cold streaks even if season-long stats look good. Dembélé\'s season is fine but L3 trend is flat — Haaland in.' },
+    ],
+    ftiCallsSummary: baseFtiCalls,
+    scoringBreakdown: [
+      { factor: 'Form (last 3, recency-weighted)', weight: 0.50 },
+      { factor: 'FTI signal_bundle confidence', weight: 0.20 },
+      { factor: 'Fixture difficulty (inverse opp strength)', weight: 0.15 },
+      { factor: 'Effective boost (balance × sensitivity)', weight: 0.10 },
+      { factor: 'Home / away modifier', weight: 0.03 },
+      { factor: 'Minutes likelihood (rotation risk)', weight: 0.02 },
+    ],
+  },
+};
+
+export function getCoachOutput(assistantId: string): CoachOutput {
+  const a = assistants.find((x) => x.id === assistantId);
+  const style: AssistantStyle = a?.style ?? 'analyst';
+  return outputs[style];
+}
 
 export const upcomingMatchup = {
   opponent: rivals[0],

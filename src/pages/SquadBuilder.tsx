@@ -78,7 +78,7 @@ export default function SquadBuilder() {
               to="/coach"
               className="btn-ghost border-accent/40 text-accent hover:bg-accent/[0.06]"
             >
-              <Brain size={14} /> Ask Coach
+              <Brain size={14} /> Ask Assistant
             </Link>
             <button
               className="btn-ghost"
@@ -222,7 +222,7 @@ export default function SquadBuilder() {
             <div className="flex items-center gap-2 mb-2.5">
               <TrendingUp size={14} className="text-emerald" />
               <h3 className="font-display text-base text-white">
-                Coach's note
+                Assistant's note
               </h3>
             </div>
             <p className="text-sm text-ink-200 leading-relaxed">
