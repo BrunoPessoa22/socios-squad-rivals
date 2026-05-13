@@ -6,6 +6,123 @@ import type {
   Rival,
 } from './types';
 
+export type AssistantStyle =
+  | 'aggressive'
+  | 'balanced'
+  | 'defensive'
+  | 'calm'
+  | 'counter'
+  | 'attacking';
+
+export type Assistant = {
+  id: string;
+  name: string;
+  age: number;
+  country: string;
+  countryFlag: string;
+  style: AssistantStyle;
+  tagline: string;
+  bio: string;
+  intro: string;
+  photo: string;
+  accentHue: number;
+  philosophy: string[];
+  signaturePhrase: string;
+};
+
+export const assistants: Assistant[] = [
+  {
+    id: 'andrea',
+    name: 'Andrea',
+    age: 33,
+    country: 'Italy',
+    countryFlag: '🇮🇹',
+    style: 'defensive',
+    tagline: 'Catenaccio classicist',
+    bio: 'Trained in the Curva Sud philosophy. Patient, ruthless, defensive first.',
+    intro: "Great call, boss. Let's get you set up, shall we?",
+    photo: 'https://i.pravatar.cc/400?img=12',
+    accentHue: 220,
+    philosophy: ['Defense first', 'Counter-attacks', 'Disciplined captain picks'],
+    signaturePhrase: 'In bocca al lupo.',
+  },
+  {
+    id: 'sofia',
+    name: 'Sofia',
+    age: 29,
+    country: 'Spain',
+    countryFlag: '🇪🇸',
+    style: 'balanced',
+    tagline: 'Tiki-taka believer',
+    bio: 'La Masia school. Possession wins games, but only if the captain delivers.',
+    intro: 'Bienvenido. I will be your assistant — let me read your wallet first.',
+    photo: 'https://i.pravatar.cc/400?img=45',
+    accentHue: 0,
+    philosophy: ['Possession-led', 'Balanced 1-1-2-1', 'Form-weighted captain'],
+    signaturePhrase: 'Mucha suerte.',
+  },
+  {
+    id: 'marcus',
+    name: 'Marcus',
+    age: 38,
+    country: 'Germany',
+    countryFlag: '🇩🇪',
+    style: 'aggressive',
+    tagline: 'Gegenpressing fanatic',
+    bio: 'High-line, high-press. Picks high-variance, high-ceiling lineups every time.',
+    intro: "Let's go. No half-measures with me — we play to win the matchday.",
+    photo: 'https://i.pravatar.cc/400?img=33',
+    accentHue: 12,
+    philosophy: ['High press', 'Two strikers', 'Boost stacking over rotation'],
+    signaturePhrase: 'Vorwärts.',
+  },
+  {
+    id: 'yuki',
+    name: 'Yuki',
+    age: 31,
+    country: 'Japan',
+    countryFlag: '🇯🇵',
+    style: 'counter',
+    tagline: 'Counter-strike strategist',
+    bio: 'Reads opponent tactics, exploits transitions. Methodical, data-first.',
+    intro: 'Hello. I have read 12 of your last matches. Let me ask a few questions.',
+    photo: 'https://i.pravatar.cc/400?img=47',
+    accentHue: 280,
+    philosophy: ['Counter-tactic reads', 'Variance-aware picks', 'Captain by matchup'],
+    signaturePhrase: 'Ganbatte kudasai.',
+  },
+  {
+    id: 'khaled',
+    name: 'Khaled',
+    age: 27,
+    country: 'Morocco',
+    countryFlag: '🇲🇦',
+    style: 'calm',
+    tagline: 'Vibes-based football',
+    bio: 'Picks based on form, mood, and gut. Surprisingly good results.',
+    intro: 'Salam. We are going to keep this simple. Trust the process.',
+    photo: 'https://i.pravatar.cc/400?img=8',
+    accentHue: 145,
+    philosophy: ['Form over fixture', 'Calm captaincy', 'Avoid injury risk'],
+    signaturePhrase: 'Bismillah.',
+  },
+  {
+    id: 'olivia',
+    name: 'Olivia',
+    age: 35,
+    country: 'Brazil',
+    countryFlag: '🇧🇷',
+    style: 'attacking',
+    tagline: 'Joga bonito',
+    bio: 'All-out attack. Forwards score, defenders are optional.',
+    intro: "Oi! Let's pick a squad that scores goals. The rest sorts itself.",
+    photo: 'https://i.pravatar.cc/400?img=24',
+    accentHue: 50,
+    philosophy: ['Two strikers always', 'Captain = top scorer', 'Form > form'],
+    signaturePhrase: 'Boa sorte!',
+  },
+];
+
 export const fanTokens = [
   { symbol: '$PSG', club: 'Paris Saint-Germain', balance: 142, boost: 1.25 },
   { symbol: '$BAR', club: 'FC Barcelona', balance: 88, boost: 1.18 },
@@ -114,6 +231,110 @@ export const tierLadder: { tier: Pack['tier']; min: number; max: number; perks: 
   { tier: 'platinum', min: 8000, max: 16000, perks: ['Scouting reports', '+0.15 token boost', 'Platinum pack monthly'] },
   { tier: 'diamond', min: 16000, max: 32000, perks: ['All perks', '+0.20 token boost', 'Diamond pack monthly', 'Pro lobby'] },
 ];
+
+export type CoachPick = {
+  slot: string;
+  playerId: string;
+  captain: boolean;
+  note: string;
+  citedStat: { label: string; value: string };
+  boostToken: string;
+  boostMultiplier: number;
+  ftiSources: string[];
+};
+
+export const coachOutput = {
+  generatedAt: '2026-05-13 08:14 UTC',
+  matchday: 'Matchday 33 · 17–18 May',
+  confidence: 84,
+  summary:
+    'Strong home weekend for your held clubs. Captain Vitinha for double the highest individual boost. International break starts next week — watch for Yamal call-up.',
+  lineup: [
+    {
+      slot: 'GK',
+      playerId: 'p1',
+      captain: false,
+      note: 'PSG conceded 0.4 xGA in last 5 home games; Reims away form is bottom-3 of Ligue 1.',
+      citedStat: { label: 'xGA / home / L5', value: '0.40' },
+      boostToken: '$PSG',
+      boostMultiplier: 1.25,
+      ftiSources: ['sports_profile', 'match_correlation'],
+    },
+    {
+      slot: 'DEF',
+      playerId: 'p3',
+      captain: false,
+      note: 'Hakimi back from suspension; FTI match_correlation shows 2 assists in last 3 meetings vs Reims.',
+      citedStat: { label: 'Assists vs Reims (L3)', value: '2' },
+      boostToken: '$PSG',
+      boostMultiplier: 1.25,
+      ftiSources: ['sports_profile', 'match_correlation'],
+    },
+    {
+      slot: 'MID',
+      playerId: 'p7',
+      captain: true,
+      note: 'Captain. Form 8.2 over last 5 — highest in your eligible pool. Captain doubles your top $PSG boost.',
+      citedStat: { label: 'Form index (L5)', value: '8.2' },
+      boostToken: '$PSG',
+      boostMultiplier: 1.25,
+      ftiSources: ['sports_profile', 'signal_bundle', 'token_sensitivity'],
+    },
+    {
+      slot: 'FWD',
+      playerId: 'p11',
+      captain: false,
+      note: 'Scored in last 3 meetings vs Reims; FTI signal_bundle confidence 0.81 for PSG attackers this week.',
+      citedStat: { label: 'Signal confidence', value: '0.81' },
+      boostToken: '$PSG',
+      boostMultiplier: 1.25,
+      ftiSources: ['signal_bundle', 'match_impact_history'],
+    },
+    {
+      slot: 'FWD',
+      playerId: 'p12',
+      captain: false,
+      note: 'Form 9.0; Barça home vs Sevilla, fixture difficulty 0.31. $BAR boost +18% applies.',
+      citedStat: { label: 'Form index (L5)', value: '9.0' },
+      boostToken: '$BAR',
+      boostMultiplier: 1.18,
+      ftiSources: ['sports_profile', 'match_correlation'],
+    },
+  ] as CoachPick[],
+  warnings: [
+    {
+      kind: 'national-break',
+      severity: 'info' as const,
+      title: 'International break starts May 24',
+      body: 'Your $PSG boost will pause for Vitinha and Hakimi (Portugal / Morocco duty). If you hold $POR or $MAR, Coach will switch the boost automatically.',
+      affectedPlayers: ['Vitinha', 'Hakimi'],
+    },
+    {
+      kind: 'injury',
+      severity: 'warn' as const,
+      title: 'Raphinha — minor knock',
+      body: 'Listed 75% fit in latest sports_profile. Coach selected Yamal instead; you can override on the Pitch screen.',
+      affectedPlayers: ['Raphinha'],
+    },
+  ],
+  ftiCallsSummary: [
+    { tool: 'wallet_balance', latency: '120ms' },
+    { tool: 'token_metadata × 4', latency: '180ms' },
+    { tool: 'match_calendar', latency: '210ms' },
+    { tool: 'sports_profile × 4', latency: '340ms' },
+    { tool: 'match_correlation × 4', latency: '290ms' },
+    { tool: 'signal_bundle', latency: '180ms' },
+    { tool: 'token_sensitivity', latency: '90ms' },
+  ],
+  scoringBreakdown: [
+    { factor: 'Form (last 5, recency-weighted)', weight: 0.25 },
+    { factor: 'Fixture difficulty (inverse opp strength)', weight: 0.20 },
+    { factor: 'Home / away modifier', weight: 0.10 },
+    { factor: 'Minutes likelihood (rotation risk)', weight: 0.15 },
+    { factor: 'Effective boost (balance × sensitivity)', weight: 0.20 },
+    { factor: 'FTI signal_bundle confidence', weight: 0.10 },
+  ],
+};
 
 export const upcomingMatchup = {
   opponent: rivals[0],

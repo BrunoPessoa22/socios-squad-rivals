@@ -2,53 +2,67 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Check,
   ChevronRight,
-  Wallet,
-  Coins,
-  Users,
+  ChevronLeft,
+  Check,
   Sparkles,
+  Inbox,
+  Wallet,
   Swords,
+  Coins,
 } from 'lucide-react';
-import { fanTokens, players, suggestedSquad } from '../data/mock';
+import { assistants, fanTokens } from '../data/mock';
 import { cn } from '../lib/cn';
-import { PositionBadge } from '../components/ui';
+import { useGame } from '../lib/store';
 
-const steps = [
-  {
-    n: 1,
-    title: 'Claim your club',
-    sub: 'We detected your wallet holdings. Pick your home crest.',
-    icon: Users,
-  },
-  {
-    n: 2,
-    title: 'Lock in your fan tokens',
-    sub: 'Your token holdings power per-player boosts during matches.',
-    icon: Coins,
-  },
-  {
-    n: 3,
-    title: 'Auto-pick your starting five',
-    sub: 'A suggested squad based on your tokens and form. Edit anytime.',
-    icon: Sparkles,
-  },
-];
+const STYLE_COLORS: Record<string, string> = {
+  aggressive: 'text-crimson border-crimson/40 bg-crimson/10',
+  balanced: 'text-emerald border-emerald/40 bg-emerald/10',
+  defensive: 'text-blue-300 border-blue-400/40 bg-blue-400/10',
+  calm: 'text-cyan-200 border-cyan-300/40 bg-cyan-300/10',
+  counter: 'text-violet-200 border-violet-300/40 bg-violet-300/10',
+  attacking: 'text-gold border-gold/40 bg-gold/10',
+};
 
 export default function Onboarding() {
   const [step, setStep] = useState(0);
-  const [club, setClub] = useState('PSG');
+  const [carouselIdx, setCarouselIdx] = useState(0);
+  const navigate = useNavigate();
+  const {
+    assistantId,
+    userName,
+    homeClub,
+    setAssistant,
+    setUserName,
+    setHomeClub,
+    completeOnboarding,
+  } = useGame();
   const [tokensOn, setTokensOn] = useState<Record<string, boolean>>(
     Object.fromEntries(fanTokens.map((t) => [t.symbol, true])),
   );
-  const navigate = useNavigate();
 
-  const next = () =>
-    step < 2 ? setStep(step + 1) : navigate('/squad');
+  const totalSteps = 5;
+  const assistant = assistants[carouselIdx];
+  const chosen = assistants.find((a) => a.id === assistantId) ?? assistants[0];
+
+  const next = () => {
+    if (step === 0) setAssistant(assistant.id);
+    if (step < totalSteps - 1) {
+      setStep(step + 1);
+    } else {
+      completeOnboarding();
+      navigate('/squad');
+    }
+  };
+  const back = () => step > 0 && setStep(step - 1);
+
+  const canContinue =
+    (step !== 1 || userName.trim().length >= 2) &&
+    (step !== 2 || homeClub.length > 0);
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="px-5 lg:px-10 py-5 flex items-center justify-between border-b border-white/[0.06]">
+    <div className="min-h-screen flex flex-col bg-ink-950">
+      <header className="px-5 lg:px-10 py-5 flex items-center justify-between border-b border-white/[0.04]">
         <Link to="/" className="flex items-center gap-2.5">
           <div className="h-9 w-9 grid place-items-center rounded-xl bg-accent shadow-glow">
             <Swords size={18} className="text-white" />
@@ -62,137 +76,314 @@ export default function Onboarding() {
             </div>
           </div>
         </Link>
-        <button
-          onClick={() => navigate('/squad')}
-          className="text-sm text-ink-300 hover:text-white"
-        >
-          Skip
-        </button>
+        <div className="flex items-center gap-4">
+          <div className="hidden sm:flex items-center gap-1.5">
+            {Array.from({ length: totalSteps }).map((_, i) => (
+              <span
+                key={i}
+                className={cn(
+                  'h-1 rounded-full transition-all',
+                  i < step
+                    ? 'w-2 bg-emerald'
+                    : i === step
+                      ? 'w-8 bg-accent'
+                      : 'w-2 bg-white/10',
+                )}
+              />
+            ))}
+          </div>
+          <button
+            onClick={() => {
+              completeOnboarding();
+              navigate('/squad');
+            }}
+            className="text-sm text-ink-300 hover:text-white"
+          >
+            Skip
+          </button>
+        </div>
       </header>
 
-      <div className="flex-1 grid lg:grid-cols-[1fr_540px] gap-10 px-5 lg:px-12 py-10 lg:py-14 max-w-[1280px] mx-auto w-full">
-        {/* Left: stepper + intro */}
-        <div>
-          <div className="stat-label text-accent mb-3">Getting started</div>
-          <h1 className="h-display text-3xl lg:text-[44px] leading-[1.05]">
-            Three cards.
-            <br />
-            <span className="text-ink-200">You're playing in 60 seconds.</span>
-          </h1>
-          <p className="mt-4 text-ink-200 max-w-md text-[15px]">
-            Squad Rivals plugs into your Socios wallet — we pre-fill every form
-            so you can skip to the football.
-          </p>
+      <div className="flex-1 flex items-center justify-center px-5 lg:px-12 py-10 lg:py-14">
+        <AnimatePresence mode="wait">
+          {step === 0 && (
+            <StepAssistant
+              key="assistant"
+              idx={carouselIdx}
+              setIdx={setCarouselIdx}
+            />
+          )}
+          {step === 1 && (
+            <StepName
+              key="name"
+              assistant={chosen}
+              name={userName}
+              setName={setUserName}
+            />
+          )}
+          {step === 2 && (
+            <StepClub
+              key="club"
+              assistant={chosen}
+              userName={userName}
+              club={homeClub}
+              setClub={setHomeClub}
+            />
+          )}
+          {step === 3 && (
+            <StepTokens
+              key="tokens"
+              assistant={chosen}
+              userName={userName}
+              tokensOn={tokensOn}
+              setTokensOn={setTokensOn}
+            />
+          )}
+          {step === 4 && (
+            <StepWelcome key="welcome" assistant={chosen} userName={userName} />
+          )}
+        </AnimatePresence>
+      </div>
 
-          <ol className="mt-10 space-y-3 max-w-md">
-            {steps.map((s, i) => {
-              const done = i < step;
-              const active = i === step;
-              return (
-                <li
-                  key={s.n}
-                  className={cn(
-                    'flex items-start gap-4 rounded-2xl border px-4 py-4 transition',
-                    active
-                      ? 'border-accent/40 bg-accent/[0.04]'
-                      : done
-                        ? 'border-white/[0.06] bg-white/[0.02]'
-                        : 'border-white/[0.04] bg-white/[0.01] opacity-70',
-                  )}
-                >
-                  <div
-                    className={cn(
-                      'h-9 w-9 grid place-items-center rounded-xl shrink-0',
-                      done
-                        ? 'bg-emerald/20 text-emerald'
-                        : active
-                          ? 'bg-accent text-white shadow-glow'
-                          : 'bg-white/[0.05] text-ink-300',
-                    )}
-                  >
-                    {done ? <Check size={17} /> : <s.icon size={17} />}
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <span className="text-[11px] uppercase tracking-[0.16em] text-ink-300 font-medium">
-                        Step {s.n}
-                      </span>
-                      {done && (
-                        <span className="text-[11px] text-emerald font-medium">
-                          Done
-                        </span>
-                      )}
-                    </div>
-                    <div className="font-medium text-white mt-0.5">
-                      {s.title}
-                    </div>
-                    <div className="text-xs text-ink-300 mt-1">{s.sub}</div>
-                  </div>
-                </li>
-              );
-            })}
-          </ol>
-        </div>
-
-        {/* Right: active card */}
-        <div className="surface p-7 lg:p-8 h-fit lg:sticky lg:top-10">
-          <AnimatePresence mode="wait">
-            {step === 0 && (
-              <ClubCard
-                key="club"
-                club={club}
-                setClub={setClub}
-              />
+      <footer className="px-5 lg:px-12 py-5 border-t border-white/[0.04]">
+        <div className="max-w-3xl mx-auto flex items-center justify-between">
+          <button
+            onClick={back}
+            disabled={step === 0}
+            className={cn(
+              'btn-ghost px-4',
+              step === 0 && 'opacity-30 cursor-not-allowed',
             )}
-            {step === 1 && (
-              <TokensCard
-                key="tokens"
-                tokensOn={tokensOn}
-                setTokensOn={setTokensOn}
-              />
-            )}
-            {step === 2 && <SquadCard key="squad" club={club} />}
-          </AnimatePresence>
-
-          <div className="mt-8 flex items-center justify-between">
-            <div className="flex items-center gap-1.5">
-              {[0, 1, 2].map((i) => (
-                <span
-                  key={i}
-                  className={cn(
-                    'h-1 rounded-full transition-all',
-                    i === step ? 'w-8 bg-accent' : 'w-2 bg-white/10',
-                  )}
-                />
-              ))}
-            </div>
-            <button onClick={next} className="btn-primary">
-              {step < 2 ? 'Continue' : 'Enter Squad Rivals'}
-              <ChevronRight size={15} />
-            </button>
+          >
+            <ChevronLeft size={15} /> Back
+          </button>
+          <div className="text-[11px] text-ink-300 flex items-center gap-1.5">
+            <Wallet size={11} />
+            0x9F2…b41 · 4 tokens detected
           </div>
+          <button
+            onClick={next}
+            disabled={!canContinue}
+            className={cn(
+              'btn-primary px-5',
+              !canContinue && 'opacity-40 cursor-not-allowed',
+            )}
+          >
+            {step === totalSteps - 1 ? (
+              <>
+                Enter Squad Rivals <ChevronRight size={15} />
+              </>
+            ) : (
+              <>
+                Next <ChevronRight size={15} />
+              </>
+            )}
+          </button>
         </div>
-      </div>
-
-      <div className="px-5 lg:px-12 py-5 border-t border-white/[0.06] text-xs text-ink-300 flex items-center gap-2 justify-center">
-        <Wallet size={13} />
-        Connected · 0x9F2…b41 · 4 fan tokens detected
-      </div>
+      </footer>
     </div>
   );
 }
 
-const cardMotion = {
-  initial: { opacity: 0, y: 10 },
+const fade = {
+  initial: { opacity: 0, y: 12 },
   animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -10 },
-  transition: { duration: 0.22 },
+  exit: { opacity: 0, y: -12 },
+  transition: { duration: 0.25 },
 };
 
-function ClubCard({
+function StepAssistant({
+  idx,
+  setIdx,
+}: {
+  idx: number;
+  setIdx: (n: number) => void;
+}) {
+  const total = assistants.length;
+  const a = assistants[idx];
+  return (
+    <motion.div {...fade} className="w-full max-w-xl">
+      <div className="text-center">
+        <h1 className="font-display font-bold text-2xl lg:text-3xl text-white tracking-tight uppercase">
+          Let's choose your assistant
+        </h1>
+        <p className="mt-3 text-sm text-ink-200 max-w-md mx-auto">
+          Pick the personality you want as your Matchday Coach. Choice is
+          cosmetic + flavour — your gameplay stays the same. You can switch
+          anytime.
+        </p>
+      </div>
+
+      <div className="mt-10 flex items-center gap-3 justify-center">
+        <button
+          onClick={() => setIdx((idx - 1 + total) % total)}
+          className="h-11 w-11 rounded-full border border-white/10 grid place-items-center hover:bg-white/[0.05]"
+        >
+          <ChevronLeft size={18} />
+        </button>
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={a.id}
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.96 }}
+            transition={{ duration: 0.2 }}
+            className="surface w-[280px] sm:w-[300px] overflow-hidden ring-2 ring-accent/50 shadow-glow"
+          >
+            <div className="relative aspect-[3/4]">
+              <div
+                className="absolute inset-0"
+                style={{
+                  background: `linear-gradient(135deg, hsl(${a.accentHue} 60% 30%), hsl(${(a.accentHue + 40) % 360} 60% 18%))`,
+                }}
+              />
+              <img
+                src={a.photo}
+                alt={a.name}
+                className="absolute inset-0 h-full w-full object-cover mix-blend-luminosity opacity-95"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).style.display = 'none';
+                }}
+              />
+              <div className="absolute top-3 right-3 h-7 w-7 grid place-items-center rounded-full bg-accent shadow-glow">
+                <Check size={14} className="text-white" strokeWidth={3} />
+              </div>
+              <div className="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-black/90 via-black/30 to-transparent">
+                <div className="font-display text-xl text-white">
+                  {a.name}
+                </div>
+                <div className="text-xs text-ink-200 mt-0.5">
+                  {a.age}y/o · {a.countryFlag} {a.country}
+                </div>
+              </div>
+            </div>
+            <div className="p-4">
+              <div
+                className={cn(
+                  'inline-flex items-center text-[10px] uppercase tracking-[0.14em] font-medium px-2 py-0.5 rounded-full border',
+                  STYLE_COLORS[a.style],
+                )}
+              >
+                {a.style}
+              </div>
+              <div className="mt-2 font-medium text-white text-sm">
+                {a.tagline}
+              </div>
+              <p className="mt-1.5 text-xs text-ink-300 leading-relaxed">
+                {a.bio}
+              </p>
+            </div>
+          </motion.div>
+        </AnimatePresence>
+
+        <button
+          onClick={() => setIdx((idx + 1) % total)}
+          className="h-11 w-11 rounded-full border border-white/10 grid place-items-center hover:bg-white/[0.05]"
+        >
+          <ChevronRight size={18} />
+        </button>
+      </div>
+
+      <div className="mt-6 flex items-center justify-center gap-1.5">
+        {assistants.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setIdx(i)}
+            className={cn(
+              'h-1.5 rounded-full transition-all',
+              i === idx ? 'w-6 bg-accent' : 'w-1.5 bg-white/15 hover:bg-white/30',
+            )}
+            aria-label={`Pick assistant ${i + 1}`}
+          />
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
+function AssistantHeader({
+  assistant,
+  message,
+  question,
+}: {
+  assistant: (typeof assistants)[number];
+  message?: string;
+  question: string;
+}) {
+  return (
+    <>
+      <div className="surface flex items-center gap-4 p-4 max-w-sm mx-auto">
+        <div
+          className="h-14 w-14 rounded-full overflow-hidden shrink-0 ring-2"
+          style={{ background: `hsl(${assistant.accentHue} 60% 30%)` }}
+        >
+          <img
+            src={assistant.photo}
+            alt={assistant.name}
+            className="h-full w-full object-cover"
+            onError={(e) => {
+              (e.target as HTMLImageElement).style.display = 'none';
+            }}
+          />
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="font-display text-lg text-white">{assistant.name}</div>
+          <div className="text-xs text-ink-200 mt-0.5">
+            {assistant.age}y/o · {assistant.countryFlag} {assistant.country}
+          </div>
+        </div>
+      </div>
+      {message && (
+        <p className="mt-8 text-lg lg:text-xl font-display text-white text-center leading-snug">
+          {message}
+        </p>
+      )}
+      <p className="mt-5 text-base font-display text-ink-100 text-center">
+        {question}
+      </p>
+    </>
+  );
+}
+
+function StepName({
+  assistant,
+  name,
+  setName,
+}: {
+  assistant: (typeof assistants)[number];
+  name: string;
+  setName: (n: string) => void;
+}) {
+  return (
+    <motion.div {...fade} className="w-full max-w-xl">
+      <AssistantHeader
+        assistant={assistant}
+        message={assistant.intro}
+        question="What should I call you?"
+      />
+      <input
+        autoFocus
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="Your name"
+        className="mt-5 mx-auto block w-full max-w-md py-3.5 px-4 rounded-xl bg-white/[0.04] border border-white/10 text-center text-lg font-display text-white placeholder:text-ink-400 focus:outline-none focus:border-accent/60 focus:bg-white/[0.06]"
+      />
+      <p className="mt-3 text-[11px] text-ink-300 text-center">
+        Only used by your assistant in messages. Never shared.
+      </p>
+    </motion.div>
+  );
+}
+
+function StepClub({
+  assistant,
+  userName,
   club,
   setClub,
 }: {
+  assistant: (typeof assistants)[number];
+  userName: string;
   club: string;
   setClub: (c: string) => void;
 }) {
@@ -203,14 +394,17 @@ function ClubCard({
     boost: t.boost,
   }));
   return (
-    <motion.div {...cardMotion}>
-      <div className="stat-label text-accent">01 · Auto-detected</div>
-      <h2 className="h-display text-2xl mt-1.5">Pick your home club</h2>
-      <p className="text-sm text-ink-200 mt-1.5">
-        Your top fan-token holding is highlighted.
+    <motion.div {...fade} className="w-full max-w-xl">
+      <AssistantHeader
+        assistant={assistant}
+        message={`Thanks, ${userName || 'boss'}. Nice to meet you.`}
+        question="Which club is home for you?"
+      />
+      <p className="mt-1 text-xs text-ink-300 text-center">
+        I auto-detected these from your wallet — pick the one you bleed for.
       </p>
 
-      <div className="mt-6 grid grid-cols-2 gap-3">
+      <div className="mt-6 grid grid-cols-2 gap-3 max-w-md mx-auto">
         {options.map((o) => {
           const active = club === o.code;
           return (
@@ -220,15 +414,13 @@ function ClubCard({
               className={cn(
                 'text-left rounded-xl border p-4 transition relative overflow-hidden',
                 active
-                  ? 'border-accent/50 bg-accent/[0.06] shadow-glow'
+                  ? 'border-accent/60 bg-accent/[0.06] shadow-glow'
                   : 'border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.04]',
               )}
             >
               <div className="flex items-start justify-between">
                 <div>
-                  <div className="font-display text-lg text-white">
-                    {o.code}
-                  </div>
+                  <div className="font-display text-lg text-white">{o.code}</div>
                   <div className="text-xs text-ink-300 mt-0.5">{o.name}</div>
                 </div>
                 {active && (
@@ -258,22 +450,30 @@ function ClubCard({
   );
 }
 
-function TokensCard({
+function StepTokens({
+  assistant,
+  userName,
   tokensOn,
   setTokensOn,
 }: {
+  assistant: (typeof assistants)[number];
+  userName: string;
   tokensOn: Record<string, boolean>;
   setTokensOn: (t: Record<string, boolean>) => void;
 }) {
+  const active = Object.values(tokensOn).filter(Boolean).length;
   return (
-    <motion.div {...cardMotion}>
-      <div className="stat-label text-accent">02 · Wallet sync</div>
-      <h2 className="h-display text-2xl mt-1.5">Your fan tokens</h2>
-      <p className="text-sm text-ink-200 mt-1.5">
-        Each token boosts that club's players during matches.
+    <motion.div {...fade} className="w-full max-w-xl">
+      <AssistantHeader
+        assistant={assistant}
+        message={`Excellent, ${userName || 'boss'}. Let me confirm which boosts I should activate.`}
+        question={`${active} of ${fanTokens.length} tokens enabled`}
+      />
+      <p className="mt-1 text-xs text-ink-300 text-center">
+        Each token boosts that club's players in your matchday lineup.
       </p>
 
-      <ul className="mt-6 space-y-2">
+      <ul className="mt-6 space-y-2 max-w-md mx-auto">
         {fanTokens.map((t) => {
           const on = tokensOn[t.symbol];
           return (
@@ -288,19 +488,15 @@ function TokensCard({
                   </span>
                 </div>
                 <div className="min-w-0">
-                  <div className="font-medium text-white truncate">
-                    {t.club}
-                  </div>
+                  <div className="font-medium text-white truncate">{t.club}</div>
                   <div className="text-xs text-ink-300">
-                    {t.balance} {t.symbol} · boost +
+                    {t.balance} {t.symbol} · +
                     {((t.boost - 1) * 100).toFixed(0)}%
                   </div>
                 </div>
               </div>
               <button
-                onClick={() =>
-                  setTokensOn({ ...tokensOn, [t.symbol]: !on })
-                }
+                onClick={() => setTokensOn({ ...tokensOn, [t.symbol]: !on })}
                 className={cn(
                   'relative h-6 w-11 rounded-full transition shrink-0',
                   on ? 'bg-accent' : 'bg-white/10',
@@ -319,64 +515,50 @@ function TokensCard({
         })}
       </ul>
 
-      <div className="mt-5 text-xs text-ink-300 flex items-start gap-2">
+      <div className="mt-5 text-xs text-ink-300 flex items-start gap-2 max-w-md mx-auto">
         <Coins size={13} className="mt-0.5 shrink-0 text-ink-300" />
-        Boosts apply automatically when a player's club matches an active
-        token. Hold more, boost more.
+        Boosts apply automatically when a player's club matches an active token.
+        You can change this anytime in Settings.
       </div>
     </motion.div>
   );
 }
 
-function SquadCard({ club }: { club: string }) {
-  const picked = Object.values(suggestedSquad)
-    .map((id) => players.find((p) => p.id === id))
-    .filter(Boolean);
+function StepWelcome({
+  assistant,
+  userName,
+}: {
+  assistant: (typeof assistants)[number];
+  userName: string;
+}) {
   return (
-    <motion.div {...cardMotion}>
-      <div className="stat-label text-accent">03 · Auto-pick</div>
-      <h2 className="h-display text-2xl mt-1.5">Your starting five</h2>
-      <p className="text-sm text-ink-200 mt-1.5">
-        Suggested from form + your boosts. Customise next.
-      </p>
-
-      <div className="mt-6 space-y-2">
-        {picked.map((p) => (
-          <div
-            key={p!.id}
-            className="flex items-center gap-3 rounded-xl border border-white/[0.06] bg-white/[0.02] p-3"
-          >
-            <PositionBadge position={p!.position} />
-            <div className="flex-1 min-w-0">
-              <div className="font-medium text-white truncate">
-                {p!.shortName}
-              </div>
-              <div className="text-xs text-ink-300">
-                {p!.club} · OVR {p!.rating}
-              </div>
+    <motion.div {...fade} className="w-full max-w-xl text-center">
+      <AssistantHeader
+        assistant={assistant}
+        question={`Excellent! I'm sure you'll do ${userName || 'us'} proud, ${userName || 'boss'}.`}
+      />
+      <div className="mt-8 surface p-5 max-w-md mx-auto text-left">
+        <div className="flex items-start gap-3">
+          <div className="h-10 w-10 rounded-lg bg-accent/15 grid place-items-center shrink-0">
+            <Inbox size={17} className="text-accent" />
+          </div>
+          <div>
+            <div className="font-medium text-white">
+              Keep an eye on your inbox.
             </div>
-            {p!.clubToken.replace('$', '') === club && (
-              <span className="pill text-[10px] !py-0.5">
-                <Sparkles size={11} className="text-accent" />
-                Boost +25%
-              </span>
-            )}
-          </div>
-        ))}
-      </div>
-
-      <div className="mt-5 rounded-xl border border-emerald/20 bg-emerald/[0.04] p-3 flex items-center gap-3">
-        <div className="h-8 w-8 rounded-lg bg-emerald/20 grid place-items-center">
-          <Check size={15} className="text-emerald" />
-        </div>
-        <div className="text-sm">
-          <div className="text-white font-medium">Squad ready</div>
-          <div className="text-xs text-ink-200">
-            Predicted score: <span className="font-mono">62.4</span> · league
-            average <span className="font-mono">54.1</span>
+            <p className="mt-1 text-sm text-ink-200 leading-relaxed">
+              That's where I'll be in touch from now on — Coach's pick before
+              every matchday, scout reports on tap, post-match breakdowns.
+            </p>
           </div>
         </div>
+        <div className="mt-4 px-3 py-2 rounded-lg bg-emerald/[0.08] border border-emerald/20 text-xs text-emerald flex items-center gap-2">
+          <Sparkles size={12} />I've just sent you your first message.
+        </div>
       </div>
+      <p className="mt-6 text-sm text-ink-300 italic">
+        {assistant.signaturePhrase}
+      </p>
     </motion.div>
   );
 }

@@ -9,12 +9,15 @@ import {
   Bell,
   Search,
   Wallet,
+  Brain,
 } from 'lucide-react';
 import { cn } from '../lib/cn';
 import { userProfile, fanTokens } from '../data/mock';
+import { useAssistant, useGame } from '../lib/store';
 
 const nav = [
   { to: '/squad', label: 'Pitch', icon: Layers },
+  { to: '/coach', label: 'Coach', icon: Brain, badge: 'NEW' as const },
   { to: '/rivals', label: 'Rivals', icon: Swords },
   { to: '/matchup', label: 'Matchup', icon: Sparkles },
   { to: '/leaderboard', label: 'League', icon: Trophy },
@@ -24,6 +27,8 @@ const nav = [
 
 export default function Layout() {
   const totalBoost = fanTokens.reduce((m, t) => Math.max(m, t.boost), 1);
+  const assistant = useAssistant();
+  const userName = useGame((s) => s.userName);
   return (
     <div className="flex min-h-screen">
       <aside className="hidden md:flex w-[240px] shrink-0 border-r border-white/[0.06] bg-ink-950/60 backdrop-blur-md flex-col">
@@ -59,12 +64,44 @@ export default function Layout() {
               }
             >
               <n.icon size={17} strokeWidth={2} />
-              <span>{n.label}</span>
+              <span className="flex-1">{n.label}</span>
+              {'badge' in n && n.badge && (
+                <span className="text-[9px] font-bold tracking-wider px-1.5 py-0.5 rounded bg-accent/20 text-accent">
+                  {n.badge}
+                </span>
+              )}
             </NavLink>
           ))}
         </nav>
 
-        <div className="m-3 surface-inset p-3">
+        <NavLink
+          to="/coach"
+          className="m-3 surface-inset p-3 flex items-center gap-3 hover:bg-white/[0.04] transition group"
+        >
+          <div
+            className="h-10 w-10 rounded-full overflow-hidden shrink-0 ring-2 ring-accent/40"
+            style={{ background: `hsl(${assistant.accentHue} 60% 30%)` }}
+          >
+            <img
+              src={assistant.photo}
+              alt={assistant.name}
+              className="h-full w-full object-cover"
+              onError={(e) => {
+                (e.target as HTMLImageElement).style.display = 'none';
+              }}
+            />
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="text-[10px] uppercase tracking-[0.14em] text-ink-300">
+              Your assistant
+            </div>
+            <div className="text-sm font-medium text-white truncate group-hover:text-accent transition">
+              {assistant.name}
+            </div>
+          </div>
+        </NavLink>
+
+        <div className="m-3 mt-0 surface-inset p-3">
           <div className="flex items-center justify-between">
             <span className="stat-label">Fan boost</span>
             <span className="text-xs font-mono text-emerald">+{((totalBoost - 1) * 100).toFixed(0)}%</span>
@@ -116,7 +153,7 @@ export default function Layout() {
                 BP
               </div>
               <span className="text-sm font-medium text-white hidden sm:inline">
-                {userProfile.handle}
+                {userName || userProfile.handle}
               </span>
             </Link>
           </div>
