@@ -95,27 +95,27 @@ export default function Play() {
     <div className="min-h-screen">
       <TopBar />
 
-      <main className="max-w-7xl mx-auto px-5 lg:px-8 py-8 lg:py-10">
-        <div className="flex flex-wrap items-end justify-between gap-4 mb-8">
+      <main className="max-w-[1200px] mx-auto px-6 py-6 lg:py-8">
+        <div className="flex flex-wrap items-end justify-between gap-4 mb-6">
           <div>
-            <div className="stat-label text-ink-300">Build squad</div>
-            <h1 className="h-display text-3xl lg:text-[44px] mt-1">
+            <div className="stat-label">Build squad</div>
+            <h1 className="font-display text-h1 text-white mt-1">
               Matchday 1
             </h1>
-            <p className="mt-1.5 text-sm text-ink-200">
+            <p className="mt-2 text-[15px] leading-[1.55] text-white/55 max-w-md">
               Pick 5 teams. Crown a captain. Choose a tactic. Lock in before
               kickoff.
             </p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <button
               onClick={() => setAssistantOpen(true)}
-              className="btn-ghost border-electric/40 text-electric hover:bg-electric/[0.06]"
+              className="btn-sm border border-cobalt/40 text-cobalt bg-cobalt/[0.06] hover:bg-cobalt/[0.12]"
             >
               <Sparkle size={14} /> Ask my assistant
             </button>
             <button
-              className="btn-primary"
+              className="btn-sm bg-cobalt text-white disabled:opacity-40 disabled:cursor-not-allowed"
               disabled={filled < 5 || captainSlot === null}
             >
               Lock squad <ChevronRight size={14} />
@@ -131,7 +131,7 @@ export default function Play() {
                 <h2 className="font-display font-bold text-white">
                   Squad · {filled}/5
                 </h2>
-                <span className="text-[11px] text-ink-300">
+                <span className="text-[11px] text-white/50">
                   Tap a slot to fill from FTI-indexed teams
                 </span>
               </div>
@@ -149,12 +149,12 @@ export default function Play() {
                             ? isCaptain
                               ? 'border-gold/50 bg-gold/[0.04] shadow-[0_0_20px_-8px_rgba(245,185,66,0.3)]'
                               : 'border-white/[0.1] bg-white/[0.03] hover:bg-white/[0.05]'
-                            : 'border-dashed border-white/[0.1] bg-white/[0.01] hover:border-electric/40',
+                            : 'border-dashed border-white/[0.1] bg-white/[0.01] hover:border-cobalt/40',
                         )}
                       >
                         {team ? (
                           <>
-                            <div className="text-[10px] font-mono text-ink-300">
+                            <div className="text-[10px] font-mono text-white/50">
                               Slot {slot.id}
                             </div>
                             <div className="text-3xl">{team.flag}</div>
@@ -162,21 +162,21 @@ export default function Play() {
                               {team.rating}
                             </div>
                             <div>
-                              <div className="text-[10px] uppercase tracking-[0.14em] text-ink-300">
+                              <div className="text-[10px] uppercase tracking-[0.14em] text-white/50">
                                 {team.code}
                               </div>
-                              <div className="text-[11px] text-ink-200 mt-0.5">
+                              <div className="text-[11px] text-white/70 mt-0.5">
                                 {team.name}
                               </div>
                             </div>
                           </>
                         ) : (
                           <>
-                            <div className="text-[10px] font-mono text-ink-300">
+                            <div className="text-[10px] font-mono text-white/50">
                               Slot {slot.id}
                             </div>
-                            <Plus size={22} className="text-ink-300" />
-                            <div className="text-[11px] text-ink-300">
+                            <Plus size={22} className="text-white/50" />
+                            <div className="text-[11px] text-white/50">
                               Pick a team
                             </div>
                           </>
@@ -188,8 +188,8 @@ export default function Play() {
                           className={cn(
                             'absolute -top-2 left-1/2 -translate-x-1/2 h-7 w-7 rounded-full grid place-items-center transition shadow-lg',
                             isCaptain
-                              ? 'bg-gold text-ink-900'
-                              : 'bg-ink-800 text-ink-300 hover:bg-gold hover:text-ink-900 border border-white/10',
+                              ? 'bg-gold text-black'
+                              : 'bg-white/[0.04] text-white/50 hover:bg-gold hover:text-black border border-white/10',
                           )}
                           title={isCaptain ? 'Captain' : 'Make captain'}
                         >
@@ -199,7 +199,7 @@ export default function Play() {
                       {team && (
                         <button
                           onClick={() => clearSlot(slot.id)}
-                          className="absolute top-1.5 right-1.5 h-5 w-5 rounded-full bg-black/60 hover:bg-crimson/40 grid place-items-center text-ink-300 hover:text-white opacity-0 group-hover:opacity-100"
+                          className="absolute top-1.5 right-1.5 h-5 w-5 rounded-full bg-black/60 hover:bg-crimson/40 grid place-items-center text-white/50 hover:text-white opacity-0 group-hover:opacity-100"
                         >
                           <X size={10} />
                         </button>
@@ -217,7 +217,7 @@ export default function Play() {
                   <h2 className="font-display font-bold text-white">
                     Tactic
                   </h2>
-                  <p className="text-[11px] text-ink-300 mt-0.5">
+                  <p className="text-[11px] text-white/50 mt-0.5">
                     One tactic for the whole squad. Bonus applies to every
                     slot.
                   </p>
@@ -236,21 +236,21 @@ export default function Play() {
                       className={cn(
                         'rounded-xl border p-3 text-left transition',
                         active
-                          ? 'border-electric/50 bg-electric/[0.06] text-white shadow-[0_0_24px_-12px_rgba(34,211,238,0.6)]'
-                          : 'border-white/[0.08] bg-white/[0.02] text-ink-100 hover:bg-white/[0.05]',
+                          ? 'border-cobalt/50 bg-cobalt/[0.06] text-white shadow-[0_0_24px_-12px_rgba(34,211,238,0.6)]'
+                          : 'border-white/[0.08] bg-white/[0.02] text-white/85 hover:bg-white/[0.05]',
                       )}
                     >
                       <div className="font-display font-bold text-white">
                         {t.name}
                       </div>
-                      <div className="text-[10px] text-ink-300 mt-0.5 line-clamp-2">
+                      <div className="text-[10px] text-white/50 mt-0.5 line-clamp-2">
                         {t.tagline}
                       </div>
                     </button>
                   );
                 })}
               </div>
-              <p className="mt-3 text-xs text-ink-300">
+              <p className="mt-3 text-xs text-white/50">
                 {tactic.longBonus}
               </p>
             </section>
@@ -262,12 +262,12 @@ export default function Play() {
                   <h2 className="font-display font-bold text-white">
                     Fan tokens
                   </h2>
-                  <p className="text-[11px] text-ink-300 mt-0.5">
+                  <p className="text-[11px] text-white/50 mt-0.5">
                     +10% per activated token. Only applies to slots where the
                     team matches.
                   </p>
                 </div>
-                <span className="text-[11px] text-ink-300">
+                <span className="text-[11px] text-white/50">
                   {activeTokens.size}/{userTokens.length} active
                 </span>
               </div>
@@ -286,14 +286,14 @@ export default function Play() {
                       className={cn(
                         'rounded-lg border px-3 py-2.5 text-left transition',
                         on
-                          ? 'border-electric/40 bg-electric/[0.06]'
+                          ? 'border-cobalt/40 bg-cobalt/[0.06]'
                           : 'border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.04] opacity-60',
                       )}
                     >
                       <div className="font-mono text-xs text-white">
                         {t.symbol}
                       </div>
-                      <div className="text-[10px] text-ink-300 mt-0.5">
+                      <div className="text-[10px] text-white/50 mt-0.5">
                         {t.balance}
                       </div>
                     </button>
@@ -310,7 +310,7 @@ export default function Play() {
               <div className="mt-2 font-display font-black text-white text-4xl lg:text-5xl tracking-tight">
                 {predicted.toLocaleString()}
               </div>
-              <div className="mt-1 text-xs text-ink-300">
+              <div className="mt-1 text-xs text-white/50">
                 Mock estimate. Real result locks at kickoff.
               </div>
               <div className="mt-4 pt-4 border-t border-white/[0.05] space-y-1.5 text-xs">
@@ -330,19 +330,19 @@ export default function Play() {
               className="w-full surface p-5 text-left hover:bg-white/[0.04] transition group"
             >
               <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-lg bg-electric/15 grid place-items-center group-hover:bg-electric/25 transition">
-                  <Sparkles size={18} className="text-electric" />
+                <div className="h-10 w-10 rounded-lg bg-cobalt/15 grid place-items-center group-hover:bg-cobalt/25 transition">
+                  <Sparkles size={18} className="text-cobalt" />
                 </div>
                 <div>
                   <div className="font-medium text-white text-sm">
                     Not sure who to pick?
                   </div>
-                  <div className="text-[11px] text-ink-300 mt-0.5">
+                  <div className="text-[11px] text-white/50 mt-0.5">
                     Your AI assistant reads the fixtures and your wallet.
                   </div>
                 </div>
               </div>
-              <div className="mt-4 inline-flex items-center gap-1 text-xs text-electric font-medium">
+              <div className="mt-4 inline-flex items-center gap-1 text-xs text-cobalt font-medium">
                 Open assistant <ChevronRight size={13} />
               </div>
             </button>
@@ -353,13 +353,13 @@ export default function Play() {
                 {[0, 1, 2].map((i) => (
                   <span
                     key={i}
-                    className="h-7 w-9 rounded-md border border-electric/30 bg-electric/[0.06] flex items-center justify-center text-[11px] font-mono text-electric"
+                    className="h-7 w-9 rounded-md border border-cobalt/30 bg-cobalt/[0.06] flex items-center justify-center text-[11px] font-mono text-cobalt"
                   >
                     1
                   </span>
                 ))}
               </div>
-              <div className="mt-2 text-[11px] text-ink-300">
+              <div className="mt-2 text-[11px] text-white/50">
                 3 free per matchday. Extra tickets cost CHZ.
               </div>
             </div>
@@ -396,8 +396,8 @@ export default function Play() {
 function Row({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-center justify-between">
-      <span className="text-ink-300">{label}</span>
-      <span className="text-ink-100 font-mono">{value}</span>
+      <span className="text-white/50">{label}</span>
+      <span className="text-white/85 font-mono">{value}</span>
     </div>
   );
 }
@@ -440,7 +440,7 @@ function TeamPicker({
       >
         <div className="flex items-center justify-between mb-4">
           <div>
-            <div className="stat-label text-electric">Slot {slotId}</div>
+            <div className="stat-label text-cobalt">Slot {slotId}</div>
             <h3 className="font-display font-bold text-white text-xl mt-1">
               Pick a team
             </h3>
@@ -457,16 +457,16 @@ function TeamPicker({
           <div className="relative flex-1 min-w-[180px]">
             <Search
               size={14}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-300"
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-white/50"
             />
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="ARG, Brazil, City…"
-              className="w-full pl-9 pr-3 py-2 bg-white/[0.03] border border-white/[0.06] rounded-lg text-sm placeholder:text-ink-400 focus:outline-none focus:border-white/[0.12]"
+              className="w-full pl-9 pr-3 py-2 bg-white/[0.03] border border-white/[0.06] rounded-lg text-sm placeholder:text-white/40 focus:outline-none focus:border-white/[0.12]"
             />
           </div>
-          <Filter size={13} className="text-ink-300" />
+          <Filter size={13} className="text-white/50" />
           {(['all', 'national', 'club'] as const).map((f) => (
             <button
               key={f}
@@ -474,8 +474,8 @@ function TeamPicker({
               className={cn(
                 'text-xs px-3 py-1.5 rounded-full font-medium transition',
                 filter === f
-                  ? 'bg-electric text-ink-950'
-                  : 'bg-white/[0.04] text-ink-200 hover:bg-white/[0.07]',
+                  ? 'bg-cobalt text-black'
+                  : 'bg-white/[0.04] text-white/70 hover:bg-white/[0.07]',
               )}
             >
               {f === 'all' ? 'All' : f === 'national' ? 'National' : 'Clubs'}
@@ -494,7 +494,7 @@ function TeamPicker({
                   className={cn(
                     'w-full flex items-center gap-3 p-3 rounded-xl border text-left transition',
                     t.id === currentTeamId
-                      ? 'border-electric/50 bg-electric/[0.06]'
+                      ? 'border-cobalt/50 bg-cobalt/[0.06]'
                       : used
                         ? 'border-white/[0.04] bg-white/[0.01] opacity-40 cursor-not-allowed'
                         : 'border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.05]',
@@ -506,11 +506,11 @@ function TeamPicker({
                       <span className="font-medium text-white text-sm">
                         {t.code}
                       </span>
-                      <span className="text-[10px] text-ink-300 uppercase tracking-[0.14em]">
+                      <span className="text-[10px] text-white/50 uppercase tracking-[0.14em]">
                         {t.type}
                       </span>
                     </div>
-                    <div className="text-[11px] text-ink-300 truncate">
+                    <div className="text-[11px] text-white/50 truncate">
                       vs {t.nextFixture.opponent} · {t.nextFixture.kickoff}
                     </div>
                   </div>

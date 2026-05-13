@@ -48,21 +48,21 @@ export default function AssistantPanel({
         exit={{ x: 540 }}
         transition={{ type: 'spring', damping: 30, stiffness: 240 }}
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-[520px] h-full bg-ink-950 border-l border-white/[0.06] overflow-y-auto relative"
+        className="w-full max-w-[520px] h-full bg-black border-l border-white/[0.06] overflow-y-auto relative"
       >
         {/* Glow strip on the left to telegraph "this is the AI layer" */}
-        <div className="absolute inset-y-0 left-0 w-px bg-gradient-to-b from-electric/60 via-electric/20 to-transparent" />
+        <div className="absolute inset-y-0 left-0 w-px bg-gradient-to-b from-cobalt/60 via-cobalt/20 to-transparent" />
 
-        <header className="sticky top-0 z-10 bg-ink-950/95 backdrop-blur border-b border-white/[0.06] px-5 py-4 flex items-center justify-between">
+        <header className="sticky top-0 z-10 bg-black/95 backdrop-blur border-b border-white/[0.06] px-5 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="h-7 w-7 rounded-md bg-electric/15 grid place-items-center">
-              <Sparkles size={14} className="text-electric" />
+            <div className="h-7 w-7 rounded-md bg-cobalt/15 grid place-items-center">
+              <Sparkles size={14} className="text-cobalt" />
             </div>
             <div>
-              <div className="stat-label !text-[10px] !text-electric">
+              <div className="stat-label !text-[10px] !text-cobalt">
                 AI Assistant · Powered by FTI
               </div>
-              <div className="text-[11px] text-ink-300">
+              <div className="text-[11px] text-white/50">
                 Mock recommendation — no live FTI call yet
               </div>
             </div>
@@ -89,7 +89,7 @@ export default function AssistantPanel({
                     className={cn(
                       'rounded-lg border p-2.5 text-left transition',
                       active
-                        ? 'border-electric/50 bg-electric/[0.06]'
+                        ? 'border-cobalt/50 bg-cobalt/[0.06]'
                         : 'border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.05]',
                     )}
                   >
@@ -114,7 +114,7 @@ export default function AssistantPanel({
                         <div className="text-xs font-medium text-white truncate">
                           {a.name}
                         </div>
-                        <div className="text-[10px] text-ink-300 truncate">
+                        <div className="text-[10px] text-white/50 truncate">
                           {a.styleLabel.replace('The ', '')}
                         </div>
                       </div>
@@ -134,7 +134,7 @@ export default function AssistantPanel({
               <h3 className="font-display font-bold text-white">
                 Squad recommendation
               </h3>
-              <span className="text-[11px] text-ink-300">
+              <span className="text-[11px] text-white/50">
                 5 teams + captain
               </span>
             </div>
@@ -153,7 +153,7 @@ export default function AssistantPanel({
                     )}
                   >
                     <div className="flex items-center gap-2 shrink-0">
-                      <span className="font-mono text-[10px] text-ink-300">
+                      <span className="font-mono text-[10px] text-white/50">
                         {i + 1}
                       </span>
                       <span className="text-xl">{team.flag}</span>
@@ -163,7 +163,7 @@ export default function AssistantPanel({
                         <span className="font-medium text-white text-sm">
                           {team.code}
                         </span>
-                        <span className="text-[10px] text-ink-300">
+                        <span className="text-[10px] text-white/50">
                           {team.name}
                         </span>
                         {s.captain && (
@@ -172,7 +172,7 @@ export default function AssistantPanel({
                           </span>
                         )}
                       </div>
-                      <p className="mt-1 text-[12px] text-ink-200 leading-relaxed">
+                      <p className="mt-1 text-[12px] text-white/70 leading-relaxed">
                         {s.reason}
                       </p>
                     </div>
@@ -194,7 +194,7 @@ export default function AssistantPanel({
               <div className="mt-1 font-display font-bold text-white">
                 {tactic.name}
               </div>
-              <div className="mt-1 text-[10px] text-ink-300">
+              <div className="mt-1 text-[10px] text-white/50">
                 {tactic.bonus}
               </div>
             </div>
@@ -203,7 +203,7 @@ export default function AssistantPanel({
               <div className="mt-1 font-display font-bold text-white">
                 {rec.tokensActivated.length} active
               </div>
-              <div className="mt-1 text-[10px] text-ink-300 truncate">
+              <div className="mt-1 text-[10px] text-white/50 truncate">
                 {rec.tokensActivated.join(' · ')}
               </div>
             </div>
@@ -212,8 +212,8 @@ export default function AssistantPanel({
           {/* Summary */}
           <section className="surface-inset p-4">
             <div className="flex items-start gap-2.5">
-              <Info size={14} className="text-electric mt-0.5 shrink-0" />
-              <p className="text-[13px] text-ink-100 leading-relaxed">
+              <Info size={14} className="text-cobalt mt-0.5 shrink-0" />
+              <p className="text-[13px] text-white/85 leading-relaxed">
                 {rec.summary}
               </p>
             </div>
@@ -238,11 +238,11 @@ export default function AssistantPanel({
                       className="text-crimson mt-0.5 shrink-0"
                     />
                   ) : (
-                    <Info size={14} className="text-electric mt-0.5 shrink-0" />
+                    <Info size={14} className="text-cobalt mt-0.5 shrink-0" />
                   )}
                   <div className="text-[12px]">
                     <div className="text-white font-medium">{w.title}</div>
-                    <div className="text-ink-200 mt-0.5 leading-relaxed">
+                    <div className="text-white/70 mt-0.5 leading-relaxed">
                       {w.body}
                     </div>
                   </div>
@@ -264,10 +264,10 @@ export default function AssistantPanel({
                     key={s.factor}
                     className="flex items-center justify-between text-[11px]"
                   >
-                    <span className="text-ink-200 truncate pr-2">
+                    <span className="text-white/70 truncate pr-2">
                       {s.factor}
                     </span>
-                    <span className="font-mono text-ink-100">
+                    <span className="font-mono text-white/85">
                       {(s.weight * 100).toFixed(0)}%
                     </span>
                   </li>
@@ -279,14 +279,14 @@ export default function AssistantPanel({
               <div className="font-display font-black text-white text-2xl mt-1">
                 {rec.confidence}
               </div>
-              <div className="text-[9px] text-ink-300 -mt-0.5">/ 100</div>
+              <div className="text-[9px] text-white/50 -mt-0.5">/ 100</div>
             </div>
           </section>
 
           {/* FTI calls trace */}
           <section>
             <div className="flex items-center gap-1.5 mb-2">
-              <Database size={12} className="text-electric" />
+              <Database size={12} className="text-cobalt" />
               <span className="stat-label !text-[10px]">
                 FTI data consulted
               </span>
@@ -302,7 +302,7 @@ export default function AssistantPanel({
               ].map((tool) => (
                 <span
                   key={tool}
-                  className="font-mono text-[10px] text-ink-300 border border-white/[0.06] bg-white/[0.02] px-2 py-0.5 rounded"
+                  className="font-mono text-[10px] text-white/50 border border-white/[0.06] bg-white/[0.02] px-2 py-0.5 rounded"
                 >
                   {tool}
                 </span>
@@ -312,7 +312,7 @@ export default function AssistantPanel({
         </div>
 
         {/* Sticky footer CTA */}
-        <footer className="sticky bottom-0 bg-ink-950/95 backdrop-blur border-t border-white/[0.06] px-5 py-4 flex items-center gap-2">
+        <footer className="sticky bottom-0 bg-black/95 backdrop-blur border-t border-white/[0.06] px-5 py-4 flex items-center gap-2">
           <button
             onClick={() => setAssistantId(assistants[(assistants.findIndex(a => a.id === assistantId) + 1) % assistants.length].id)}
             className="btn-ghost"
@@ -351,7 +351,7 @@ function AssistantHeader({
     >
       <div className="flex items-center gap-3">
         <div
-          className="h-12 w-12 rounded-full overflow-hidden shrink-0 ring-2 ring-electric/40"
+          className="h-12 w-12 rounded-full overflow-hidden shrink-0 ring-2 ring-cobalt/40"
           style={{ background: `hsl(${assistant.accentHue} 60% 30%)` }}
         >
           <img
@@ -368,16 +368,16 @@ function AssistantHeader({
             <span className="font-display font-bold text-white">
               {assistant.name}
             </span>
-            <span className="text-[10px] text-ink-200">
+            <span className="text-[10px] text-white/70">
               {assistant.age}y/o · {assistant.countryFlag} {assistant.country}
             </span>
           </div>
-          <div className="text-[11px] text-electric font-medium uppercase tracking-[0.14em] mt-0.5">
+          <div className="text-[11px] text-cobalt font-medium uppercase tracking-[0.14em] mt-0.5">
             {assistant.styleLabel}
           </div>
         </div>
       </div>
-      <p className="mt-3 text-sm text-ink-100 italic leading-relaxed">
+      <p className="mt-3 text-sm text-white/85 italic leading-relaxed">
         "{assistant.coachLine}. Tactic: {tactic.name}. Confidence{' '}
         {rec.confidence}/100."
       </p>

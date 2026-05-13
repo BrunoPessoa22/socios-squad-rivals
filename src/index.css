@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -13,64 +13,59 @@
   #root {
     height: 100%;
     background: #000;
-    color: #d4d8de;
-    font-family: 'Inter', system-ui, sans-serif;
+    color: #f5f5f7;
+    font-family: 'Manrope', system-ui, -apple-system, sans-serif;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
   body {
     margin: 0;
-    background:
-      radial-gradient(1100px 600px at 50% -10%, rgba(255, 45, 74, 0.06), transparent 60%),
-      #000;
+    background: #000;
   }
   ::selection {
-    background: rgba(34, 211, 238, 0.4);
+    background: rgba(24, 51, 203, 0.5);
     color: #fff;
   }
 }
 
 @layer components {
+  .gradient-crush {
+    background-image: linear-gradient(to right bottom, #ff7359, #e63810);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
   .surface {
-    @apply rounded-2xl border border-white/[0.07] bg-white/[0.02] backdrop-blur-sm;
+    @apply rounded-2xl border border-white/[0.07] bg-white/[0.02];
   }
   .surface-inset {
     @apply rounded-xl border border-white/[0.05] bg-white/[0.02];
   }
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition select-none;
+    @apply inline-flex items-center justify-center gap-2 rounded-full text-[16px] font-semibold transition select-none;
+    height: 56px;
+    padding: 0 28px;
   }
   .btn-primary {
-    @apply btn bg-electric text-ink-950 font-semibold hover:bg-electric-hover;
+    @apply btn bg-cobalt text-white hover:brightness-110;
   }
   .btn-ghost {
-    @apply btn border border-white/10 bg-white/[0.02] text-ink-100 hover:bg-white/[0.06];
+    @apply btn border border-white/15 bg-white/[0.04] text-white hover:bg-white/[0.07];
   }
-  .btn-subtle {
-    @apply btn bg-white/[0.04] text-ink-100 hover:bg-white/[0.07];
+  .btn-sm {
+    @apply inline-flex items-center justify-center gap-2 rounded-full text-[14px] font-semibold transition select-none;
+    height: 40px;
+    padding: 0 18px;
   }
   .pill {
-    @apply inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-xs font-medium text-ink-100;
+    @apply inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[11px] font-medium text-white/70;
   }
   .stat-label {
-    @apply text-[11px] uppercase tracking-[0.16em] text-ink-300 font-medium;
-  }
-  .h-display {
-    @apply font-display font-black tracking-[-0.02em] text-white;
+    @apply text-[11px] uppercase tracking-[0.16em] text-white/45 font-medium;
   }
 }
 
-*::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-*::-webkit-scrollbar-track {
-  background: transparent;
-}
-*::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.06);
-  border-radius: 8px;
-}
-*::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.12);
-}
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.06); border-radius: 8px; }
+*::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.12); }

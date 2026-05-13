@@ -5,46 +5,37 @@ export default {
   theme: {
     extend: {
       colors: {
+        cobalt: {
+          DEFAULT: '#1833cb',
+          hover: '#2447e8',
+        },
+        accent: '#ff7359',
+        gold: {
+          400: '#f59e0b',
+          500: '#d97706',
+        },
+        argblue: '#75AADB',
+        porblue: '#4561ff',
+        bragold: '#fcd34d',
         ink: {
-          950: '#07080b',
-          900: '#0c0e13',
-          800: '#11141b',
-          700: '#181c25',
-          600: '#222732',
-          500: '#2f3542',
-          400: '#4a5160',
-          300: '#717a8a',
-          200: '#a4abb8',
-          100: '#d4d8de',
+          950: '#000',
+          900: '#0a0a0c',
+          800: '#111114',
+          700: '#1a1a1f',
         },
-        accent: {
-          DEFAULT: '#ff2d4a',
-          hover: '#ff4761',
-          soft: 'rgba(255,45,74,0.12)',
-        },
-        electric: {
-          DEFAULT: '#22d3ee',
-          hover: '#67e8f9',
-          soft: 'rgba(34,211,238,0.10)',
-        },
-        gold: '#f5b942',
         emerald: '#22c98a',
         crimson: '#ff4757',
       },
       fontFamily: {
-        display: ['"Inter"', 'system-ui', 'sans-serif'],
-        sans: ['"Inter"', 'system-ui', 'sans-serif'],
+        body: ['"Manrope"', 'system-ui', 'sans-serif'],
+        display: ['"Manrope"', 'system-ui', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
       },
-      boxShadow: {
-        glow: '0 0 0 1px rgba(255,45,74,0.4), 0 8px 32px -8px rgba(255,45,74,0.5)',
-        card: '0 1px 0 rgba(255,255,255,0.04) inset, 0 8px 32px -16px rgba(0,0,0,0.6)',
-      },
-      backgroundImage: {
-        'pitch-gradient':
-          'linear-gradient(180deg, #0d3b22 0%, #0a2e1b 50%, #07241432 100%)',
-        'pitch-stripes':
-          'repeating-linear-gradient(180deg, rgba(255,255,255,0.04) 0 40px, transparent 40px 80px)',
+      fontSize: {
+        // exact sizes from real site
+        'h1': ['48px', { lineHeight: '0.95', fontWeight: '800', letterSpacing: '-0.01em' }],
+        'h2': ['28px', { lineHeight: '1.1', fontWeight: '800', letterSpacing: '-0.005em' }],
+        'h3': ['15px', { lineHeight: '1.3', fontWeight: '700' }],
       },
     },
   },
